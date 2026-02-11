@@ -204,6 +204,16 @@
             transform: translateY(-1px);
             box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
         }
+
+        .btn-share {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            transition: all 0.3s;
+        }
+        
+        .btn-share:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+        }
     </style>
 </head>
 <body class="min-h-screen text-white">
@@ -516,15 +526,15 @@
                     <div class="space-y-3">
                         <div>
                             <label class="text-xs text-gray-400 block mb-1">Valor Atual (R$)</label>
-                            <input type="number" id="input-nmrr-valor" value="1161" class="config-input w-full px-3 py-2 rounded-lg text-sm">
+                            <input type="number" id="input-nmrr-valor" value="1161" class="config-input w-full px-3 py-2 rounded-lg text-sm" onchange="atualizarDashboard()">
                         </div>
                         <div>
                             <label class="text-xs text-gray-400 block mb-1">Meta (R$)</label>
-                            <input type="number" id="input-nmrr-meta" value="32000" class="config-input w-full px-3 py-2 rounded-lg text-sm">
+                            <input type="number" id="input-nmrr-meta" value="32000" class="config-input w-full px-3 py-2 rounded-lg text-sm" onchange="atualizarDashboard()">
                         </div>
                         <div>
                             <label class="text-xs text-gray-400 block mb-1">Variação (+R$)</label>
-                            <input type="number" id="input-nmrr-variacao" value="1161" class="config-input w-full px-3 py-2 rounded-lg text-sm">
+                            <input type="number" id="input-nmrr-variacao" value="1161" class="config-input w-full px-3 py-2 rounded-lg text-sm" onchange="atualizarDashboard()">
                         </div>
                     </div>
                 </div>
@@ -540,15 +550,15 @@
                     <div class="space-y-3">
                         <div>
                             <label class="text-xs text-gray-400 block mb-1">Quantidade Atual</label>
-                            <input type="number" id="input-vendas-valor" value="1" class="config-input w-full px-3 py-2 rounded-lg text-sm">
+                            <input type="number" id="input-vendas-valor" value="1" class="config-input w-full px-3 py-2 rounded-lg text-sm" onchange="atualizarDashboard()">
                         </div>
                         <div>
                             <label class="text-xs text-gray-400 block mb-1">Meta</label>
-                            <input type="number" id="input-vendas-meta" value="20" class="config-input w-full px-3 py-2 rounded-lg text-sm">
+                            <input type="number" id="input-vendas-meta" value="20" class="config-input w-full px-3 py-2 rounded-lg text-sm" onchange="atualizarDashboard()">
                         </div>
                         <div>
                             <label class="text-xs text-gray-400 block mb-1">Variação (+)</label>
-                            <input type="number" id="input-vendas-variacao" value="1" class="config-input w-full px-3 py-2 rounded-lg text-sm">
+                            <input type="number" id="input-vendas-variacao" value="1" class="config-input w-full px-3 py-2 rounded-lg text-sm" onchange="atualizarDashboard()">
                         </div>
                     </div>
                 </div>
@@ -565,15 +575,15 @@
                     <div class="space-y-3">
                         <div>
                             <label class="text-xs text-gray-400 block mb-1">Taxa Atual (%)</label>
-                            <input type="number" step="0.01" id="input-conversao-valor" value="4.17" class="config-input w-full px-3 py-2 rounded-lg text-sm">
+                            <input type="number" step="0.01" id="input-conversao-valor" value="4.17" class="config-input w-full px-3 py-2 rounded-lg text-sm" onchange="atualizarDashboard()">
                         </div>
                         <div>
                             <label class="text-xs text-gray-400 block mb-1">Meta (%)</label>
-                            <input type="number" step="0.01" id="input-conversao-meta" value="22" class="config-input w-full px-3 py-2 rounded-lg text-sm">
+                            <input type="number" step="0.01" id="input-conversao-meta" value="22" class="config-input w-full px-3 py-2 rounded-lg text-sm" onchange="atualizarDashboard()">
                         </div>
                         <div>
                             <label class="text-xs text-gray-400 block mb-1">Variação (%)</label>
-                            <input type="number" step="0.01" id="input-conversao-variacao" value="4.17" class="config-input w-full px-3 py-2 rounded-lg text-sm">
+                            <input type="number" step="0.01" id="input-conversao-variacao" value="4.17" class="config-input w-full px-3 py-2 rounded-lg text-sm" onchange="atualizarDashboard()">
                         </div>
                     </div>
                 </div>
@@ -587,11 +597,11 @@
                     <div class="space-y-3">
                         <div>
                             <label class="text-xs text-gray-400 block mb-1">Valor (R$)</label>
-                            <input type="number" id="input-pipeline-morno" value="14389" class="config-input w-full px-3 py-2 rounded-lg text-sm">
+                            <input type="number" id="input-pipeline-morno" value="14389" class="config-input w-full px-3 py-2 rounded-lg text-sm" onchange="atualizarDashboard()">
                         </div>
                         <div>
                             <label class="text-xs text-gray-400 block mb-1">Meta Geral (R$) - Compartilhada</label>
-                            <input type="number" id="input-pipeline-meta" value="32000" class="config-input w-full px-3 py-2 rounded-lg text-sm bg-gray-800/50" readonly>
+                            <input type="number" id="input-pipeline-meta" value="32000" class="config-input w-full px-3 py-2 rounded-lg text-sm bg-gray-800/50" onchange="atualizarDashboard()">
                         </div>
                     </div>
                 </div>
@@ -605,7 +615,7 @@
                     <div class="space-y-3">
                         <div>
                             <label class="text-xs text-gray-400 block mb-1">Valor (R$)</label>
-                            <input type="number" id="input-pipeline-quente" value="4584" class="config-input w-full px-3 py-2 rounded-lg text-sm">
+                            <input type="number" id="input-pipeline-quente" value="4584" class="config-input w-full px-3 py-2 rounded-lg text-sm" onchange="atualizarDashboard()">
                         </div>
                         <div>
                             <label class="text-xs text-gray-400 block mb-1">Meta Geral (R$) - Compartilhada</label>
@@ -626,31 +636,31 @@
                         <div class="grid grid-cols-2 gap-2">
                             <div>
                                 <label class="text-xs text-gray-400 block mb-1">Agendas</label>
-                                <input type="number" id="input-agendas-valor" value="32" class="config-input w-full px-2 py-2 rounded-lg text-sm">
+                                <input type="number" id="input-agendas-valor" value="32" class="config-input w-full px-2 py-2 rounded-lg text-sm" onchange="atualizarDashboard()">
                             </div>
                             <div>
                                 <label class="text-xs text-gray-400 block mb-1">Meta</label>
-                                <input type="number" id="input-agendas-meta" value="178" class="config-input w-full px-2 py-2 rounded-lg text-sm">
+                                <input type="number" id="input-agendas-meta" value="178" class="config-input w-full px-2 py-2 rounded-lg text-sm" onchange="atualizarDashboard()">
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-2">
                             <div>
                                 <label class="text-xs text-gray-400 block mb-1">SQL In</label>
-                                <input type="number" id="input-sql-in-valor" value="19" class="config-input w-full px-2 py-2 rounded-lg text-sm">
+                                <input type="number" id="input-sql-in-valor" value="19" class="config-input w-full px-2 py-2 rounded-lg text-sm" onchange="atualizarDashboard()">
                             </div>
                             <div>
                                 <label class="text-xs text-gray-400 block mb-1">Meta</label>
-                                <input type="number" id="input-sql-in-meta" value="120" class="config-input w-full px-2 py-2 rounded-lg text-sm">
+                                <input type="number" id="input-sql-in-meta" value="120" class="config-input w-full px-2 py-2 rounded-lg text-sm" onchange="atualizarDashboard()">
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-2">
                             <div>
                                 <label class="text-xs text-gray-400 block mb-1">SQL Out</label>
-                                <input type="number" id="input-sql-out-valor" value="7" class="config-input w-full px-2 py-2 rounded-lg text-sm">
+                                <input type="number" id="input-sql-out-valor" value="7" class="config-input w-full px-2 py-2 rounded-lg text-sm" onchange="atualizarDashboard()">
                             </div>
                             <div>
                                 <label class="text-xs text-gray-400 block mb-1">Meta</label>
-                                <input type="number" id="input-sql-out-meta" value="36" class="config-input w-full px-2 py-2 rounded-lg text-sm">
+                                <input type="number" id="input-sql-out-meta" value="36" class="config-input w-full px-2 py-2 rounded-lg text-sm" onchange="atualizarDashboard()">
                             </div>
                         </div>
                     </div>
@@ -658,7 +668,7 @@
             </div>
 
             <!-- Botões de Ação -->
-            <div class="flex gap-4 mt-8 justify-center">
+            <div class="flex flex-wrap gap-4 mt-8 justify-center">
                 <button onclick="atualizarDashboard()" class="btn-update px-8 py-3 rounded-xl font-semibold text-white flex items-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -671,6 +681,16 @@
                     </svg>
                     Gerar Dados Aleatórios
                 </button>
+                <button onclick="compartilharURL()" class="btn-share px-8 py-3 rounded-xl font-semibold text-white flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                    </svg>
+                    Copiar Link com Dados
+                </button>
+            </div>
+            
+            <div class="mt-4 text-center">
+                <p class="text-gray-500 text-sm">Os dados são salvos automaticamente no navegador. Use "Copiar Link" para compartilhar.</p>
             </div>
         </div>
     </div>
@@ -682,7 +702,13 @@
         // Inicialização
         document.addEventListener('DOMContentLoaded', function() {
             initCharts();
-            // Atualiza dashboard inicial
+            
+            // Tenta carregar dados da URL primeiro, depois do localStorage
+            if (!carregarDaURL()) {
+                carregarDoLocalStorage();
+            }
+            
+            // Atualiza dashboard com os dados carregados
             atualizarDashboard();
         });
 
@@ -762,7 +788,7 @@
             const nmrrValor = parseFloat(document.getElementById('input-nmrr-valor').value) || 0;
             const nmrrMeta = parseFloat(document.getElementById('input-nmrr-meta').value) || 1;
             const nmrrVariacao = parseFloat(document.getElementById('input-nmrr-variacao').value) || 0;
-            const nmrrPct = Math.round((nmrrValor / nmrrMeta) * 100);
+            const nmrrPct = Math.min(Math.round((nmrrValor / nmrrMeta) * 100), 100);
             
             document.getElementById('val-nmrr').textContent = formatarNumero(nmrrValor);
             document.getElementById('meta-nmrr').textContent = formatarNumero(nmrrMeta);
@@ -778,7 +804,7 @@
             const vendasValor = parseInt(document.getElementById('input-vendas-valor').value) || 0;
             const vendasMeta = parseInt(document.getElementById('input-vendas-meta').value) || 1;
             const vendasVariacao = parseInt(document.getElementById('input-vendas-variacao').value) || 0;
-            const vendasPct = Math.round((vendasValor / vendasMeta) * 100);
+            const vendasPct = Math.min(Math.round((vendasValor / vendasMeta) * 100), 100);
             
             document.getElementById('val-vendas').textContent = vendasValor;
             document.getElementById('meta-vendas').textContent = vendasMeta;
@@ -793,7 +819,7 @@
             const conversaoValor = parseFloat(document.getElementById('input-conversao-valor').value) || 0;
             const conversaoMeta = parseFloat(document.getElementById('input-conversao-meta').value) || 1;
             const conversaoVariacao = parseFloat(document.getElementById('input-conversao-variacao').value) || 0;
-            const conversaoPct = Math.round((conversaoValor / conversaoMeta) * 100);
+            const conversaoPct = Math.min(Math.round((conversaoValor / conversaoMeta) * 100), 100);
             
             document.getElementById('val-conversao').textContent = conversaoValor.toFixed(2) + '%';
             document.getElementById('meta-conversao').textContent = conversaoMeta.toFixed(0);
@@ -807,7 +833,7 @@
             // Pipeline Morno
             const pipelineMorno = parseFloat(document.getElementById('input-pipeline-morno').value) || 0;
             const pipelineMeta = parseFloat(document.getElementById('input-pipeline-meta').value) || 1;
-            const pipelineMornoPct = Math.round((pipelineMorno / pipelineMeta) * 100);
+            const pipelineMornoPct = Math.min(Math.round((pipelineMorno / pipelineMeta) * 100), 100);
             
             document.getElementById('val-pipeline-morno').textContent = formatarNumero(pipelineMorno);
             document.getElementById('meta-pipeline').textContent = formatarNumero(pipelineMeta);
@@ -817,7 +843,7 @@
 
             // Pipeline Quente
             const pipelineQuente = parseFloat(document.getElementById('input-pipeline-quente').value) || 0;
-            const pipelineQuentePct = Math.round((pipelineQuente / pipelineMeta) * 100);
+            const pipelineQuentePct = Math.min(Math.round((pipelineQuente / pipelineMeta) * 100), 100);
             
             document.getElementById('val-pipeline-quente').textContent = formatarNumero(pipelineQuente);
             document.getElementById('pct-pipeline-quente').textContent = pipelineQuentePct + '%';
@@ -826,7 +852,7 @@
             // Agendas
             const agendasValor = parseInt(document.getElementById('input-agendas-valor').value) || 0;
             const agendasMeta = parseInt(document.getElementById('input-agendas-meta').value) || 1;
-            const agendasPct = Math.round((agendasValor / agendasMeta) * 100);
+            const agendasPct = Math.min(Math.round((agendasValor / agendasMeta) * 100), 100);
             
             document.getElementById('val-agendas').textContent = agendasValor;
             document.getElementById('meta-agendas').textContent = agendasMeta;
@@ -836,7 +862,7 @@
             // SQL Inbound
             const sqlInValor = parseInt(document.getElementById('input-sql-in-valor').value) || 0;
             const sqlInMeta = parseInt(document.getElementById('input-sql-in-meta').value) || 1;
-            const sqlInPct = Math.round((sqlInValor / sqlInMeta) * 100);
+            const sqlInPct = Math.min(Math.round((sqlInValor / sqlInMeta) * 100), 100);
             
             document.getElementById('val-sql-inbound').textContent = sqlInValor;
             document.getElementById('meta-sql-inbound').textContent = sqlInMeta;
@@ -846,25 +872,97 @@
             // SQL Outbound
             const sqlOutValor = parseInt(document.getElementById('input-sql-out-valor').value) || 0;
             const sqlOutMeta = parseInt(document.getElementById('input-sql-out-meta').value) || 1;
-            const sqlOutPct = Math.round((sqlOutValor / sqlOutMeta) * 100);
+            const sqlOutPct = Math.min(Math.round((sqlOutValor / sqlOutMeta) * 100), 100);
             
             document.getElementById('val-sql-outbound').textContent = sqlOutValor;
             document.getElementById('meta-sql-outbound').textContent = sqlOutMeta;
             document.getElementById('pct-sql-outbound').textContent = sqlOutPct + '%';
             document.getElementById('bar-sql-outbound').style.width = sqlOutPct + '%';
 
-            // Atualizar gráficos com dados aleatórios suaves
-            atualizarGraficos();
+            // Salvar no localStorage
+            salvarNoLocalStorage();
         }
 
-        function atualizarGraficos() {
-            // Gerar dados aleatórios para os gráficos
-            Object.keys(charts).forEach(key => {
-                const newData = Array(10).fill(0).map(() => Math.floor(Math.random() * 40) + 10);
-                newData.sort((a, b) => a - b); // Crescente
-                charts[key].data.datasets[0].data = newData;
-                charts[key].update();
-            });
+        function salvarNoLocalStorage() {
+            const dados = {
+                nmrr: {
+                    valor: document.getElementById('input-nmrr-valor').value,
+                    meta: document.getElementById('input-nmrr-meta').value,
+                    variacao: document.getElementById('input-nmrr-variacao').value
+                },
+                vendas: {
+                    valor: document.getElementById('input-vendas-valor').value,
+                    meta: document.getElementById('input-vendas-meta').value,
+                    variacao: document.getElementById('input-vendas-variacao').value
+                },
+                conversao: {
+                    valor: document.getElementById('input-conversao-valor').value,
+                    meta: document.getElementById('input-conversao-meta').value,
+                    variacao: document.getElementById('input-conversao-variacao').value
+                },
+                pipeline: {
+                    morno: document.getElementById('input-pipeline-morno').value,
+                    quente: document.getElementById('input-pipeline-quente').value,
+                    meta: document.getElementById('input-pipeline-meta').value
+                },
+                atividades: {
+                    agendas: document.getElementById('input-agendas-valor').value,
+                    agendasMeta: document.getElementById('input-agendas-meta').value,
+                    sqlIn: document.getElementById('input-sql-in-valor').value,
+                    sqlInMeta: document.getElementById('input-sql-in-meta').value,
+                    sqlOut: document.getElementById('input-sql-out-valor').value,
+                    sqlOutMeta: document.getElementById('input-sql-out-meta').value
+                }
+            };
+            
+            localStorage.setItem('dashboard_vendas_dados', JSON.stringify(dados));
+        }
+
+        function carregarDoLocalStorage() {
+            const dados = localStorage.getItem('dashboard_vendas_dados');
+            if (!dados) return false;
+            
+            try {
+                const p = JSON.parse(dados);
+                
+                if (p.nmrr) {
+                    document.getElementById('input-nmrr-valor').value = p.nmrr.valor;
+                    document.getElementById('input-nmrr-meta').value = p.nmrr.meta;
+                    document.getElementById('input-nmrr-variacao').value = p.nmrr.variacao;
+                }
+                
+                if (p.vendas) {
+                    document.getElementById('input-vendas-valor').value = p.vendas.valor;
+                    document.getElementById('input-vendas-meta').value = p.vendas.meta;
+                    document.getElementById('input-vendas-variacao').value = p.vendas.variacao;
+                }
+                
+                if (p.conversao) {
+                    document.getElementById('input-conversao-valor').value = p.conversao.valor;
+                    document.getElementById('input-conversao-meta').value = p.conversao.meta;
+                    document.getElementById('input-conversao-variacao').value = p.conversao.variacao;
+                }
+                
+                if (p.pipeline) {
+                    document.getElementById('input-pipeline-morno').value = p.pipeline.morno;
+                    document.getElementById('input-pipeline-quente').value = p.pipeline.quente;
+                    document.getElementById('input-pipeline-meta').value = p.pipeline.meta;
+                }
+                
+                if (p.atividades) {
+                    document.getElementById('input-agendas-valor').value = p.atividades.agendas;
+                    document.getElementById('input-agendas-meta').value = p.atividades.agendasMeta;
+                    document.getElementById('input-sql-in-valor').value = p.atividades.sqlIn;
+                    document.getElementById('input-sql-in-meta').value = p.atividades.sqlInMeta;
+                    document.getElementById('input-sql-out-valor').value = p.atividades.sqlOut;
+                    document.getElementById('input-sql-out-meta').value = p.atividades.sqlOutMeta;
+                }
+                
+                return true;
+            } catch (e) {
+                console.error('Erro ao carregar dados:', e);
+                return false;
+            }
         }
 
         function dadosAleatorios() {
@@ -892,11 +990,6 @@
             return num.toLocaleString('pt-BR');
         }
 
-        // Adicionar listeners para atualização automática ao alterar inputs
-        document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('change', atualizarDashboard);
-        });
-
         // Hover effects
         document.querySelectorAll('.metric-card, .pipeline-card').forEach(card => {
             card.addEventListener('mouseenter', function() {
@@ -906,6 +999,82 @@
                 this.style.transform = 'translateY(0)';
             });
         });
+
+        // Funções para compartilhamento via URL
+        function compartilharURL() {
+            const params = new URLSearchParams();
+            
+            // Adicionar todos os valores aos parâmetros
+            params.set('nmrr_v', document.getElementById('input-nmrr-valor').value);
+            params.set('nmrr_m', document.getElementById('input-nmrr-meta').value);
+            params.set('nmrr_var', document.getElementById('input-nmrr-variacao').value);
+            
+            params.set('ven_v', document.getElementById('input-vendas-valor').value);
+            params.set('ven_m', document.getElementById('input-vendas-meta').value);
+            params.set('ven_var', document.getElementById('input-vendas-variacao').value);
+            
+            params.set('conv_v', document.getElementById('input-conversao-valor').value);
+            params.set('conv_m', document.getElementById('input-conversao-meta').value);
+            params.set('conv_var', document.getElementById('input-conversao-variacao').value);
+            
+            params.set('pipe_mor', document.getElementById('input-pipeline-morno').value);
+            params.set('pipe_quen', document.getElementById('input-pipeline-quente').value);
+            params.set('pipe_m', document.getElementById('input-pipeline-meta').value);
+            
+            params.set('ag_v', document.getElementById('input-agendas-valor').value);
+            params.set('ag_m', document.getElementById('input-agendas-meta').value);
+            params.set('sqlin_v', document.getElementById('input-sql-in-valor').value);
+            params.set('sqlin_m', document.getElementById('input-sql-in-meta').value);
+            params.set('sqlout_v', document.getElementById('input-sql-out-valor').value);
+            params.set('sqlout_m', document.getElementById('input-sql-out-meta').value);
+            
+            const url = window.location.pathname + '?' + params.toString();
+            
+            // Copiar para clipboard
+            const fullUrl = window.location.origin + url;
+            navigator.clipboard.writeText(fullUrl).then(() => {
+                alert('Link copiado para a área de transferência! Cole no navegador para ver o dashboard com estes dados.');
+            }).catch(() => {
+                // Fallback: mostrar URL para copiar manualmente
+                prompt('Copie este link:', fullUrl);
+            });
+        }
+
+        function carregarDaURL() {
+            const params = new URLSearchParams(window.location.search);
+            
+            if (!params.has('nmrr_v')) return false;
+            
+            try {
+                document.getElementById('input-nmrr-valor').value = params.get('nmrr_v') || 1161;
+                document.getElementById('input-nmrr-meta').value = params.get('nmrr_m') || 32000;
+                document.getElementById('input-nmrr-variacao').value = params.get('nmrr_var') || 1161;
+                
+                document.getElementById('input-vendas-valor').value = params.get('ven_v') || 1;
+                document.getElementById('input-vendas-meta').value = params.get('ven_m') || 20;
+                document.getElementById('input-vendas-variacao').value = params.get('ven_var') || 1;
+                
+                document.getElementById('input-conversao-valor').value = params.get('conv_v') || 4.17;
+                document.getElementById('input-conversao-meta').value = params.get('conv_m') || 22;
+                document.getElementById('input-conversao-variacao').value = params.get('conv_var') || 4.17;
+                
+                document.getElementById('input-pipeline-morno').value = params.get('pipe_mor') || 14389;
+                document.getElementById('input-pipeline-quente').value = params.get('pipe_quen') || 4584;
+                document.getElementById('input-pipeline-meta').value = params.get('pipe_m') || 32000;
+                
+                document.getElementById('input-agendas-valor').value = params.get('ag_v') || 32;
+                document.getElementById('input-agendas-meta').value = params.get('ag_m') || 178;
+                document.getElementById('input-sql-in-valor').value = params.get('sqlin_v') || 19;
+                document.getElementById('input-sql-in-meta').value = params.get('sqlin_m') || 120;
+                document.getElementById('input-sql-out-valor').value = params.get('sqlout_v') || 7;
+                document.getElementById('input-sql-out-meta').value = params.get('sqlout_m') || 36;
+                
+                return true;
+            } catch (e) {
+                console.error('Erro ao carregar da URL:', e);
+                return false;
+            }
+        }
     </script>
 </body>
 </html>
