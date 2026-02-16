@@ -1,12 +1,12 @@
 {
   "mes": "Fevereiro 2026",
   "nmrr": {
-    "atual": 172450,
+    "atual": 210000,
     "meta": 210000,
     "variacao": 15000
   },
   "vendas": {
-    "atual": 52,
+    "atual": 12,
     "meta": 65,
     "variacao": 8
   },
