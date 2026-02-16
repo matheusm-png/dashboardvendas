@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="300"> <!-- Atualiza a cada 5 minutos opcional -->
+    <meta http-equiv="refresh" content="60">
     <title>Dashboard de Vendas - TV Corporativa</title>
     <style>
         * {
@@ -13,156 +13,409 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 50%, #0d1117 100%);
             min-height: 100vh;
-            color: white;
-            overflow: hidden;
+            color: #ffffff;
+            overflow-x: hidden;
         }
 
-        .dashboard {
-            display: grid;
-            grid-template-rows: auto 1fr auto;
-            height: 100vh;
-            padding: 40px;
-            gap: 30px;
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 40px;
         }
 
-        header {
-            text-align: center;
-            padding-bottom: 20px;
-            border-bottom: 2px solid rgba(255,255,255,0.2);
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
         }
 
-        h1 {
-            font-size: 3em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
-        .mes-atual {
-            font-size: 1.5em;
-            opacity: 0.9;
-            background: rgba(255,255,255,0.1);
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .brand-text h1 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 4px;
+        }
+
+        .brand-text p {
+            color: #6b7280;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-text p::before {
+            content: '';
             display: inline-block;
-            padding: 10px 30px;
-            border-radius: 30px;
+            width: 20px;
+            height: 2px;
+            background: #4ade80;
+            border-radius: 1px;
         }
 
-        .grid-cards {
+        .meta-badge {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #4ade80;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .meta-badge::before {
+            content: '✓';
+            width: 18px;
+            height: 18px;
+            background: #22c55e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: white;
+        }
+
+        .mes-badge {
+            color: #9ca3af;
+            font-size: 14px;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .main-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            align-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
         }
 
-        .card {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
+        .main-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 20px;
-            padding: 30px;
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: transform 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            background: rgba(255,255,255,0.15);
-        }
-
-        .card-title {
-            font-size: 1.2em;
-            opacity: 0.8;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .card-value {
-            font-size: 3em;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .card-meta {
-            font-size: 1.1em;
-            opacity: 0.8;
-            margin-bottom: 15px;
-        }
-
-        .variacao {
-            display: inline-block;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 1.1em;
-        }
-
-        .positivo {
-            background: #28a745;
-        }
-
-        .negativo {
-            background: #dc3545;
-        }
-
-        .neutro {
-            background: #ffc107;
-            color: #333;
-        }
-
-        .pipelines {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-top: 20px;
-        }
-
-        .pipeline-card {
-            background: rgba(255,255,255,0.15);
-            border-radius: 15px;
             padding: 25px;
-            border-left: 5px solid;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
         }
 
-        .pipeline-morno {
-            border-left-color: #ffc107;
+        .main-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
         }
 
-        .pipeline-quente {
-            border-left-color: #ff6b6b;
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
         }
 
-        .pipeline-title {
-            font-size: 1.3em;
-            margin-bottom: 10px;
+        .card-icons {
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .pipeline-value {
-            font-size: 2.2em;
-            font-weight: bold;
+        .icon-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .icon-nmrr { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+        .icon-vendas { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+        .icon-conversao { background: rgba(168, 85, 247, 0.15); color: #a78bfa; }
+
+        .variacao-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .variacao-up {
+            background: rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .variacao-down {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .percent-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            position: relative;
+        }
+
+        .percent-nmrr { border-color: #3b82f6; color: #60a5fa; }
+        .percent-vendas { border-color: #3b82f6; color: #60a5fa; }
+        .percent-conversao { border-color: #8b5cf6; color: #a78bfa; }
+
+        .card-title {
+            font-size: 14px;
+            color: #9ca3af;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .card-subtitle {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 15px;
+        }
+
+        .card-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #ffffff;
             margin-bottom: 5px;
         }
 
-        footer {
+        .card-meta {
+            font-size: 16px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .chart-container {
+            height: 80px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .area-chart {
+            width: 100%;
+            height: 100%;
+        }
+
+        .pipeline-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .pipeline-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pipeline-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        }
+
+        .pipeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .pipeline-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            color: #9ca3af;
+            font-weight: 500;
+        }
+
+        .pipeline-percent {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .pipeline-percent span {
+            font-size: 14px;
+            color: #6b7280;
+            font-weight: 400;
+        }
+
+        .pipeline-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .pipeline-morno-value { color: #fb923c; }
+        .pipeline-quente-value { color: #f87171; }
+
+        .pipeline-meta {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.8s ease;
+        }
+
+        .progress-morno { background: linear-gradient(90deg, #f97316, #fb923c); }
+        .progress-quente { background: linear-gradient(90deg, #ef4444, #f87171); }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .metric-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .metric-title {
+            font-size: 13px;
+            color: #9ca3af;
+            font-weight: 500;
+        }
+
+        .metric-percent {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .metric-percent span {
+            font-size: 11px;
+            color: #6b7280;
+            font-weight: 400;
+        }
+
+        .metric-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .metric-value span {
+            font-size: 14px;
+            color: #6b7280;
+            font-weight: 400;
+        }
+
+        .metric-progress {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .metric-progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.8s ease;
+        }
+
+        .progress-agendas { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+        .progress-inbound { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+        .progress-outbound { background: linear-gradient(90deg, #ec4899, #f472b6); }
+
+        .footer-message {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 25px;
             text-align: center;
-            padding-top: 20px;
-            border-top: 2px solid rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
         }
 
-        .mensagem-motivacional {
-            font-size: 1.8em;
-            font-style: italic;
-            opacity: 0.95;
-            animation: pulse 3s infinite;
+        .fire-icon {
+            font-size: 24px;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 0.95; }
-            50% { opacity: 0.7; }
+        .message-text {
+            font-size: 18px;
+            color: #4ade80;
+            font-weight: 600;
         }
 
         .loading {
@@ -170,31 +423,105 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            font-size: 2em;
+            font-size: 18px;
+            color: #6b7280;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        .erro-dados {
-            text-align: center;
-            padding: 50px;
-            background: rgba(220, 53, 69, 0.3);
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(59, 130, 246, 0.3);
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .last-update {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 16px;
             border-radius: 20px;
-            margin: 20px;
+            font-size: 12px;
+            color: #6b7280;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Responsividade para TVs */
         @media (min-width: 1920px) {
-            .card-value { font-size: 4em; }
-            .mensagem-motivacional { font-size: 2.2em; }
+            .container { max-width: 1800px; padding: 40px 60px; }
+            .card-value { font-size: 48px; }
+            .pipeline-value { font-size: 42px; }
+            .metric-value { font-size: 36px; }
         }
     </style>
 </head>
 <body>
+    <div class="last-update" id="lastUpdate">Atualizando...</div>
+    
     <div id="app">
-        <div class="loading">Carregando dashboard...</div>
+        <div class="loading">
+            <div class="spinner"></div>
+            <div>Carregando dashboard...</div>
+        </div>
     </div>
 
     <script>
-        // Função para formatar moeda
+        function generateAreaData(points, trend = 'up') {
+            const data = [];
+            let value = trend === 'up' ? 20 : 80;
+            for (let i = 0; i < points; i++) {
+                value += (Math.random() - 0.3) * 15;
+                value = Math.max(10, Math.min(90, value));
+                data.push(value);
+            }
+            return data;
+        }
+
+        function createAreaChart(data, color, gradientId) {
+            const width = 300;
+            const height = 80;
+            const points = data.length;
+            const stepX = width / (points - 1);
+            
+            let pathD = `M 0 ${height}`;
+            let areaD = `M 0 ${height}`;
+            
+            data.forEach((val, i) => {
+                const x = i * stepX;
+                const y = height - (val / 100 * height);
+                if (i === 0) {
+                    pathD = `M ${x} ${y}`;
+                    areaD = `M ${x} ${y}`;
+                } else {
+                    pathD += ` L ${x} ${y}`;
+                    areaD += ` L ${x} ${y}`;
+                }
+            });
+            
+            areaD += ` L ${width} ${height} Z`;
+            
+            return `
+                <svg class="area-chart" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none">
+                    <defs>
+                        <linearGradient id="${gradientId}" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:${color};stop-opacity:0.3" />
+                            <stop offset="100%" style="stop-color:${color};stop-opacity:0" />
+                        </linearGradient>
+                    </defs>
+                    <path d="${areaD}" fill="url(#${gradientId})" />
+                    <path d="${pathD}" fill="none" stroke="${color}" stroke-width="2" />
+                </svg>
+            `;
+        }
+
         function formatarMoeda(valor) {
             return new Intl.NumberFormat('pt-BR', {
                 style: 'currency',
@@ -203,130 +530,194 @@
             }).format(valor);
         }
 
-        // Função para calcular variação
-        function calcularVariacao(atual, meta) {
-            const diff = atual - meta;
-            const percent = ((atual / meta) - 1) * 100;
-            return {
-                valor: diff,
-                percentual: percent.toFixed(1),
-                positivo: diff >= 0
-            };
+        function calcularPercentual(atual, meta) {
+            return Math.round((atual / meta) * 100);
         }
 
-        // Carregar dados da URL ou usar defaults
-        function carregarDados() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const dadosCodificados = urlParams.get('dados');
-
-            if (dadosCodificados) {
-                try {
-                    const dados = JSON.parse(atob(dadosCodificados));
-                    return dados;
-                } catch (e) {
-                    console.error('Erro ao decodificar dados:', e);
-                    return null;
-                }
+        async function carregarDados() {
+            try {
+                const response = await fetch(`dados.json?t=${Date.now()}`);
+                if (!response.ok) throw new Error('Arquivo não encontrado');
+                return await response.json();
+            } catch (e) {
+                console.error('Erro ao carregar dados:', e);
+                return null;
             }
-
-            // Dados padrão (fallback)
-            return {
-                mes: "Fevereiro 2026",
-                nmrr: { atual: 0, meta: 1 },
-                vendas: { atual: 0, meta: 1 },
-                conversao: { atual: 0, meta: 1 },
-                pipelineMorno: { valor: 0, meta: 1 },
-                pipelineQuente: { valor: 0, meta: 1 },
-                mensagem: "Configure os dados via painel administrativo"
-            };
         }
 
-        // Renderizar dashboard
-        function renderizar() {
-            const dados = carregarDados();
+        async function renderizar() {
+            const dados = await carregarDados();
             const app = document.getElementById('app');
+            const lastUpdate = document.getElementById('lastUpdate');
 
             if (!dados) {
                 app.innerHTML = `
-                    <div class="erro-dados">
-                        <h2>⚠️ Erro ao carregar dados</h2>
-                        <p>Verifique se o link está correto ou gere um novo no painel administrativo.</p>
+                    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; gap: 20px;">
+                        <div style="font-size: 48px;">⚠️</div>
+                        <h2 style="color: #f87171;">Aguardando configuração</h2>
+                        <p style="color: #6b7280;">Acesse o painel administrativo para enviar os primeiros dados.</p>
                     </div>
                 `;
                 return;
             }
 
-            // Calcular variações
-            const nmrrVar = calcularVariacao(dados.nmrr.atual, dados.nmrr.meta);
-            const vendasVar = calcularVariacao(dados.vendas.atual, dados.vendas.meta);
-            const convVar = calcularVariacao(dados.conversao.atual, dados.conversao.meta);
+            lastUpdate.textContent = `Atualizado: ${new Date().toLocaleString('pt-BR')}`;
+
+            const nmrrPercent = calcularPercentual(dados.nmrr.atual, dados.nmrr.meta);
+            const vendasPercent = calcularPercentual(dados.vendas.atual, dados.vendas.meta);
+            const conversaoPercent = calcularPercentual(dados.conversao.atual, dados.conversao.meta);
+            
+            const pipelineMornoPercent = calcularPercentual(dados.pipelineMorno.valor, dados.pipelineMorno.meta);
+            const pipelineQuentePercent = calcularPercentual(dados.pipelineQuente.valor, dados.pipelineQuente.meta);
+            
+            const agendasPercent = calcularPercentual(dados.agendas.atual, dados.agendas.meta);
+            const inboundPercent = calcularPercentual(dados.sqlsInbound.atual, dados.sqlsInbound.meta);
+            const outboundPercent = calcularPercentual(dados.sqlsOutbound.atual, dados.sqlsOutbound.meta);
+
+            const nmrrChart = createAreaChart(generateAreaData(20, 'up'), '#22c55e', 'gradNmrr');
+            const vendasChart = createAreaChart(generateAreaData(20, 'up'), '#3b82f6', 'gradVendas');
+            const conversaoChart = createAreaChart(generateAreaData(20, 'up'), '#a855f7', 'gradConversao');
 
             app.innerHTML = `
-                <div class="dashboard">
-                    <header>
-                        <h1>📊 Dashboard de Vendas</h1>
-                        <div class="mes-atual">Meta Mensal: ${dados.mes}</div>
-                    </header>
-
-                    <main>
-                        <div class="grid-cards">
-                            <div class="card">
-                                <div class="card-title">💰 NMRR</div>
-                                <div class="card-value">${formatarMoeda(dados.nmrr.atual)}</div>
-                                <div class="card-meta">Meta: ${formatarMoeda(dados.nmrr.meta)}</div>
-                                <span class="variacao ${nmrrVar.positivo ? 'positivo' : 'negativo'}">
-                                    ${nmrrVar.positivo ? '+' : ''}${formatarMoeda(nmrrVar.valor)} (${nmrrVar.positivo ? '+' : ''}${nmrrVar.percentual}%)
-                                </span>
+                <div class="container">
+                    <div class="header">
+                        <div class="brand">
+                            <div class="logo">Y</div>
+                            <div class="brand-text">
+                                <h1>Dashboard de Vendas</h1>
+                                <p>Acompanhamento em tempo real</p>
                             </div>
+                        </div>
+                        <div>
+                            <div class="meta-badge">Meta Mensal</div>
+                            <div class="mes-badge">${dados.mes}</div>
+                        </div>
+                    </div>
 
-                            <div class="card">
-                                <div class="card-title">🎯 Vendas Realizadas</div>
-                                <div class="card-value">${dados.vendas.atual}</div>
-                                <div class="card-meta">Meta: ${dados.vendas.meta}</div>
-                                <span class="variacao ${vendasVar.positivo ? 'positivo' : 'negativo'}">
-                                    ${vendasVar.positivo ? '+' : ''}${vendasVar.valor} un (${vendasVar.positivo ? '+' : ''}${vendasVar.percentual}%)
-                                </span>
+                    <div class="main-grid">
+                        <div class="main-card">
+                            <div class="card-header">
+                                <div class="card-icons">
+                                    <div class="icon-circle icon-nmrr">$</div>
+                                    <div class="variacao-badge variacao-up">↑ +${formatarMoeda(dados.nmrr.variacao)}</div>
+                                </div>
+                                <div class="percent-circle percent-nmrr">${nmrrPercent}%</div>
                             </div>
-
-                            <div class="card">
-                                <div class="card-title">📈 Taxa de Conversão</div>
-                                <div class="card-value">${dados.conversao.atual}%</div>
-                                <div class="card-meta">Meta: ${dados.conversao.meta}%</div>
-                                <span class="variacao ${convVar.positivo ? 'positivo' : 'negativo'}">
-                                    ${convVar.positivo ? '+' : ''}${convVar.valor}% (${convVar.positivo ? '+' : ''}${convVar.percentual}%)
-                                </span>
+                            <div class="card-title">NMRR Realizado</div>
+                            <div class="card-subtitle">New Monthly Recurring Revenue</div>
+                            <div class="card-value">${formatarMoeda(dados.nmrr.atual)} <span class="card-meta">/ ${formatarMoeda(dados.nmrr.meta)}</span></div>
+                            <div class="chart-container">
+                                ${nmrrChart}
                             </div>
                         </div>
 
-                        <div class="pipelines">
-                            <div class="pipeline-card pipeline-morno">
-                                <div class="pipeline-title">🔥 Pipeline Morno</div>
-                                <div class="pipeline-value">${formatarMoeda(dados.pipelineMorno.valor)}</div>
-                                <div>Meta Geral: ${formatarMoeda(dados.pipelineMorno.meta)}</div>
+                        <div class="main-card">
+                            <div class="card-header">
+                                <div class="card-icons">
+                                    <div class="icon-circle icon-vendas">🛒</div>
+                                    <div class="variacao-badge variacao-up">↑ + ${dados.vendas.variacao} venda</div>
+                                </div>
+                                <div class="percent-circle percent-vendas">${vendasPercent}%</div>
                             </div>
-
-                            <div class="pipeline-card pipeline-quente">
-                                <div class="pipeline-title">🚀 Pipeline Quente</div>
-                                <div class="pipeline-value">${formatarMoeda(dados.pipelineQuente.valor)}</div>
-                                <div>Meta Geral: ${formatarMoeda(dados.pipelineQuente.meta)}</div>
+                            <div class="card-title">Vendas Realizadas</div>
+                            <div class="card-subtitle">Total de fechamentos</div>
+                            <div class="card-value">${dados.vendas.atual} <span class="card-meta">/ ${dados.vendas.meta}</span></div>
+                            <div class="chart-container">
+                                ${vendasChart}
                             </div>
                         </div>
-                    </main>
 
-                    <footer>
-                        <div class="mensagem-motivacional">"${dados.mensagem}"</div>
-                    </footer>
+                        <div class="main-card">
+                            <div class="card-header">
+                                <div class="card-icons">
+                                    <div class="icon-circle icon-conversao">⟳</div>
+                                    <div class="variacao-badge variacao-up">↑ + ${dados.conversao.variacao} %</div>
+                                </div>
+                                <div class="percent-circle percent-conversao">${conversaoPercent}%</div>
+                            </div>
+                            <div class="card-title">Taxa de Conversão</div>
+                            <div class="card-subtitle">SQL → Venda</div>
+                            <div class="card-value">${dados.conversao.atual.toFixed(2)}% <span class="card-meta">/ ${dados.conversao.meta}%</span></div>
+                            <div class="chart-container">
+                                ${conversaoChart}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pipeline-grid">
+                        <div class="pipeline-card">
+                            <div class="pipeline-header">
+                                <div class="pipeline-title">
+                                    <span style="font-size: 20px;">🔥</span>
+                                    Pipeline Morno
+                                </div>
+                                <div class="pipeline-percent">${pipelineMornoPercent}<span>% da meta</span></div>
+                            </div>
+                            <div class="pipeline-value pipeline-morno-value">${formatarMoeda(dados.pipelineMorno.valor)} <span style="font-size: 16px; color: #6b7280; font-weight: 400;">/ ${formatarMoeda(dados.pipelineMorno.meta)}</span></div>
+                            <div class="progress-bar">
+                                <div class="progress-fill progress-morno" style="width: ${Math.min(pipelineMornoPercent, 100)}%"></div>
+                            </div>
+                        </div>
+
+                        <div class="pipeline-card">
+                            <div class="pipeline-header">
+                                <div class="pipeline-title">
+                                    <span style="font-size: 20px;">🚀</span>
+                                    Pipeline Quente
+                                </div>
+                                <div class="pipeline-percent">${pipelineQuentePercent}<span>% da meta</span></div>
+                            </div>
+                            <div class="pipeline-value pipeline-quente-value">${formatarMoeda(dados.pipelineQuente.valor)} <span style="font-size: 16px; color: #6b7280; font-weight: 400;">/ ${formatarMoeda(dados.pipelineQuente.meta)}</span></div>
+                            <div class="progress-bar">
+                                <div class="progress-fill progress-quente" style="width: ${Math.min(pipelineQuentePercent, 100)}%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-header">
+                                <div class="metric-title">Agendas</div>
+                                <div class="metric-percent">${agendasPercent}<span>% da meta</span></div>
+                            </div>
+                            <div class="metric-value">${dados.agendas.atual} <span>/ ${dados.agendas.meta}</span></div>
+                            <div class="metric-progress">
+                                <div class="metric-progress-fill progress-agendas" style="width: ${Math.min(agendasPercent, 100)}%"></div>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-header">
+                                <div class="metric-title">SQLs Inbound</div>
+                                <div class="metric-percent">${inboundPercent}<span>% da meta</span></div>
+                            </div>
+                            <div class="metric-value">${dados.sqlsInbound.atual} <span>/ ${dados.sqlsInbound.meta}</span></div>
+                            <div class="metric-progress">
+                                <div class="metric-progress-fill progress-inbound" style="width: ${Math.min(inboundPercent, 100)}%"></div>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-header">
+                                <div class="metric-title">SQLs Outbound</div>
+                                <div class="metric-percent">${outboundPercent}<span>% da meta</span></div>
+                            </div>
+                            <div class="metric-value">${dados.sqlsOutbound.atual} <span>/ ${dados.sqlsOutbound.meta}</span></div>
+                            <div class="metric-progress">
+                                <div class="metric-progress-fill progress-outbound" style="width: ${Math.min(outboundPercent, 100)}%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="footer-message">
+                        <span class="fire-icon">🔥</span>
+                        <span class="message-text">${dados.mensagem}</span>
+                    </div>
                 </div>
             `;
         }
 
-        // Inicializar
         renderizar();
-
-        // Auto-atualização opcional (a cada 5 minutos)
-        setInterval(() => {
-            location.reload();
-        }, 300000);
     </script>
 </body>
 </html>
