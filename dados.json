@@ -1,0 +1,39 @@
+{
+  "mes": "Fevereiro 2026",
+  "nmrr": {
+    "atual": 172450,
+    "meta": 210000,
+    "variacao": 15000
+  },
+  "vendas": {
+    "atual": 52,
+    "meta": 65,
+    "variacao": 8
+  },
+  "conversao": {
+    "atual": 28.7,
+    "meta": 32,
+    "variacao": 5.2
+  },
+  "pipelineMorno": {
+    "valor": 384920,
+    "meta": 550000
+  },
+  "pipelineQuente": {
+    "valor": 267300,
+    "meta": 520000
+  },
+  "agendas": {
+    "atual": 145,
+    "meta": 200
+  },
+  "sqlsInbound": {
+    "atual": 89,
+    "meta": 150
+  },
+  "sqlsOutbound": {
+    "atual": 34,
+    "meta": 80
+  },
+  "mensagem": "Estamos acelerando forte! Mantendo esse ritmo, a meta fica totalmente alcançável."
+}
