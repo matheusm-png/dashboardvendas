@@ -358,7 +358,7 @@
 
         async function buscarDados() {
             try {
-                const resp = await fetch(APPS_SCRIPT_URL + '?nocache=' + Date.now());
+                const resp = await fetch(APPS_SCRIPT_URL + '?aba=vendas&nocache=' + Date.now());
                 if (!resp.ok) throw new Error('HTTP ' + resp.status);
                 const dados = await resp.json();
                 renderizarDashboard(dados);
