@@ -97,9 +97,8 @@
                     <h1 style="font-size:2.8rem;font-weight:900;line-height:1;background:linear-gradient(90deg,#61de75 0%,#a8f5b4 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-1px;">Dashboard de Vendas</h1>
                     <p style="color:rgba(255,255,255,0.4);font-size:0.85rem;margin-top:6px;letter-spacing:0.2px;">Acompanhamento em tempo real</p>
                     <!-- DATA E HORA DE ATUALIZAÇÃO -->
-                    <p id="header-last-update" style="color:rgba(255,255,255,0.25);font-size:0.75rem;margin-top:3px;letter-spacing:0.2px;display:flex;align-items:center;gap:4px;">
-                        <span class="dot-live"></span>
-                        <span id="header-update-text">Carregando...</span>
+                    <p id="header-last-update" style="color:rgba(255,255,255,0.25);font-size:0.75rem;margin-top:3px;letter-spacing:0.2px;">
+                        🕐 <span id="header-update-text">Carregando...</span>
                     </p>
                 </div>
 
@@ -392,17 +391,11 @@
 
         function atualizarTimestampHeader() {
             const agora = new Date();
-            const diasSemana = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
-            const meses = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
-
-            const diaSemana = diasSemana[agora.getDay()];
-            const dia = String(agora.getDate()).padStart(2, '0');
-            const mes = meses[agora.getMonth()];
-            const ano = agora.getFullYear();
+            const data = agora.toLocaleDateString('pt-BR');
             const hora = agora.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit', second: '2-digit'});
 
             document.getElementById('header-update-text').textContent =
-                `${diaSemana}, ${dia} ${mes} ${ano} · ${hora}`;
+                `Última atualização: ${data}, ${hora}`;
         }
 
         function renderizarDashboard(d) {
