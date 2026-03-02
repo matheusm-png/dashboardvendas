@@ -398,47 +398,62 @@
                 `Última atualização: ${data}, ${hora}`;
         }
 
+        // Converte valor para número seguro (0 se NaN, null, #DIV/0!, etc.)
+        function n(val) {
+            const v = parseFloat(val);
+            return (isNaN(v) || !isFinite(v)) ? 0 : v;
+        }
+
+        // Calcula percentual com proteção contra divisão por zero
+        function safePct(valor, meta) {
+            if (!n(meta)) return 0;
+            return Math.min(Math.round((n(valor) / n(meta)) * 100), 100);
+        }
+
         function renderizarDashboard(d) {
             // NMRR
-            const nmrrPct = Math.min(Math.round((d.nmrr_valor / d.nmrr_meta) * 100), 100);
-            document.getElementById('val-nmrr').textContent = fmt(d.nmrr_valor);
-            document.getElementById('meta-nmrr').textContent = fmt(d.nmrr_meta);
-            document.getElementById('nmrr-variacao').textContent = fmt(d.nmrr_variacao);
+            const nmrrPct = safePct(d.nmrr_valor, d.nmrr_meta);
+            document.getElementById('val-nmrr').textContent = fmt(n(d.nmrr_valor));
+            document.getElementById('meta-nmrr').textContent = fmt(n(d.nmrr_meta));
+            document.getElementById('nmrr-variacao').textContent = fmt(n(d.nmrr_variacao));
             document.getElementById('pct-nmrr').textContent = nmrrPct + '%';
             setCircle('circle-nmrr', nmrrPct);
 
             // Vendas
-            const vendasPct = Math.min(Math.round((d.vendas_valor / d.vendas_meta) * 100), 100);
-            document.getElementById('val-vendas').textContent = d.vendas_valor;
-            document.getElementById('meta-vendas').textContent = d.vendas_meta;
-            document.getElementById('vendas-variacao').textContent = d.vendas_variacao;
+            const vendasPct = safePct(d.vendas_valor, d.vendas_meta);
+            document.getElementById('val-vendas').textContent = n(d.vendas_valor) || '--';
+            document.getElementById('meta-vendas').textContent = n(d.vendas_meta) || '--';
+            document.getElementById('vendas-variacao').textContent = n(d.vendas_variacao);
             document.getElementById('pct-vendas').textContent = vendasPct + '%';
             setCircle('circle-vendas', vendasPct);
 
-            // Conversão
-            const convPct = Math.min(Math.round((d.conversao_valor / d.conversao_meta) * 100), 100);
-            document.getElementById('val-conversao').textContent = parseFloat(d.conversao_valor).toFixed(2) + '%';
-            document.getElementById('meta-conversao').textContent = parseFloat(d.conversao_meta).toFixed(0);
-            document.getElementById('conversao-variacao').textContent = parseFloat(d.conversao_variacao).toFixed(2);
-            document.getElementById('pct-conversao').textContent = convPct + '%';
+            // Conversão — protegido contra #DIV/0! e NaN vindos da planilha
+            const convVal  = n(d.conversao_valor);
+            const convMeta = n(d.conversao_meta);
+            const convVar  = n(d.conversao_variacao);
+            const convPct  = safePct(convVal, convMeta);
+            document.getElementById('val-conversao').textContent  = convVal  ? convVal.toFixed(2) + '%' : '--%';
+            document.getElementById('meta-conversao').textContent = convMeta ? convMeta.toFixed(0)      : '--';
+            document.getElementById('conversao-variacao').textContent = convVar.toFixed(2);
+            document.getElementById('pct-conversao').textContent  = convPct + '%';
             setCircle('circle-conversao', convPct);
 
             // Pipeline Morno
-            const pipelineMeta = parseFloat(d.pipeline_meta);
-            const mornoPct = Math.min(Math.round((d.pipeline_morno / pipelineMeta) * 100), 100);
-            document.getElementById('val-pipeline-morno').textContent = fmt(d.pipeline_morno);
+            const pipelineMeta = n(d.pipeline_meta);
+            const mornoPct = safePct(d.pipeline_morno, pipelineMeta);
+            document.getElementById('val-pipeline-morno').textContent = fmt(n(d.pipeline_morno));
             document.getElementById('meta-pipeline').textContent = fmt(pipelineMeta);
             document.getElementById('meta-pipeline-display').textContent = fmt(pipelineMeta);
             document.getElementById('pct-pipeline-morno').textContent = mornoPct + '%';
             document.getElementById('bar-pipeline-morno').style.width = mornoPct + '%';
 
             // Pipeline Quente
-            const quentePct = Math.min(Math.round((d.pipeline_quente / pipelineMeta) * 100), 100);
-            document.getElementById('val-pipeline-quente').textContent = fmt(d.pipeline_quente);
+            const quentePct = safePct(d.pipeline_quente, pipelineMeta);
+            document.getElementById('val-pipeline-quente').textContent = fmt(n(d.pipeline_quente));
             document.getElementById('pct-pipeline-quente').textContent = quentePct + '%';
             document.getElementById('bar-pipeline-quente').style.width = quentePct + '%';
 
-            // Agendas
+            // Agendas / SQLs
             setBar('val-agendas', 'meta-agendas', 'pct-agendas', 'bar-agendas', d.agendas_valor, d.agendas_meta);
             setBar('val-sql-inbound', 'meta-sql-inbound', 'pct-sql-inbound', 'bar-sql-inbound', d.sqlin_valor, d.sqlin_meta);
             setBar('val-sql-outbound', 'meta-sql-outbound', 'pct-sql-outbound', 'bar-sql-outbound', d.sqlout_valor, d.sqlout_meta);
@@ -450,9 +465,9 @@
         }
 
         function setBar(valId, metaId, pctId, barId, valor, meta) {
-            const pct = Math.min(Math.round((valor / meta) * 100), 100);
-            document.getElementById(valId).textContent = valor;
-            document.getElementById(metaId).textContent = meta;
+            const pct = Math.min(Math.round((n(valor) / (n(meta) || 1)) * 100), 100);
+            document.getElementById(valId).textContent = n(valor) || '--';
+            document.getElementById(metaId).textContent = n(meta) || '--';
             document.getElementById(pctId).textContent = pct + '%';
             document.getElementById(barId).style.width = pct + '%';
         }
