@@ -24,18 +24,21 @@
         .badge-green { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
         .badge-blue { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
         .badge-purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+        .badge-amber { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
         .badge-meta { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
         .progress-bar-bg { background: rgba(255, 255, 255, 0.05); }
         .progress-bar-fill { transition: width 1s ease-out; box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); }
         .glow-text { text-shadow: 0 0 20px rgba(74, 222, 128, 0.5); }
         .glow-orange { text-shadow: 0 0 20px rgba(251, 146, 60, 0.5); }
         .glow-red { text-shadow: 0 0 20px rgba(239, 68, 68, 0.5); }
+        .glow-amber { text-shadow: 0 0 20px rgba(245, 158, 11, 0.5); }
         @keyframes pulse-glow { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
         .animate-pulse-slow { animation: pulse-glow 3s infinite; }
         .chart-container { position: relative; height: 45px; overflow: hidden; }
         .mini-chart { position: absolute; bottom: 0; left: 0; right: 0; }
         .pipeline-value { background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         .pipeline-value-hot { background: linear-gradient(135deg, #f87171 0%, #dc2626 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .pace-value { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         .logo-box { background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%); }
 
         /* Status de carregamento */
@@ -68,6 +71,9 @@
         /* Pulse dot animado */
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
         .dot-live { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #4ade80; animation: blink 2s infinite; vertical-align: middle; margin-right: 5px; }
+
+        /* Pace card círculo */
+        .pace-ring-circle { transition: stroke-dashoffset 1.2s ease-in-out; }
     </style>
 </head>
 <body class="min-h-screen text-white">
@@ -83,30 +89,21 @@
     <!-- DASHBOARD -->
     <div id="dashboard-area" class="p-4">
         <div class="max-w-6xl mx-auto">
-            <!-- Header estilo TV corporativa -->
+            <!-- Header -->
             <div class="relative flex items-center justify-between mb-6 rounded-2xl overflow-hidden px-8 py-5" style="background: linear-gradient(135deg, #050a05 0%, #0a1a0a 60%, #0a0e1a 100%); border: 1px solid rgba(97,222,117,0.2); min-height: 110px;">
-                <!-- Glow verde fundo -->
                 <div style="position:absolute;top:-60px;left:-60px;width:400px;height:260px;background:radial-gradient(ellipse,rgba(97,222,117,0.1) 0%,transparent 70%);pointer-events:none;"></div>
-                <!-- Símbolo decorativo fantasma canto direito -->
                 <div style="position:absolute;right:20px;top:-30px;opacity:0.08;transform:scale(3.5);transform-origin:right top;pointer-events:none;">
                     <svg width="66" height="44" viewBox="0 0 66 44"><path d="M47.548,4.818v6.26l8.04-.435c-14.822,16-20.871,22.77-27.435,22.77-5.238,0-7.686-3.36-8.757-7.021,14.412-.5,19.342-9.319,19.342-14.846C38.738,6.092,35.533,0,26.72,0,17.191,0,12.512,9.451,11.881,18.583a8.806,8.806,0,0,1-5.065-8.314,17.589,17.589,0,0,1,1.3-6.724C6.529,2.918,1.7,1.282,1.7,1.282A30.663,30.663,0,0,0,0,10.628,15.478,15.478,0,0,0,12.252,25.76c1.725,9.229,8.252,14.106,15.9,14.106,9.9,0,16.675-8.377,32.28-24.966l-.5,8.56h6.26V4.818H47.548ZM26.6,6.975a4.651,4.651,0,0,1,5.048,4.967c0,3.827-4.487,8.147-12.371,8.147-.211,0-.419,0-.625-.009C18.81,12.6,21.721,6.975,26.6,6.975" fill="#61de75"/></svg>
                 </div>
-
-                <!-- Esquerda: título -->
                 <div class="relative z-10">
                     <h1 style="font-size:2.8rem;font-weight:900;line-height:1;background:linear-gradient(90deg,#61de75 0%,#a8f5b4 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-1px;">Dashboard de Vendas</h1>
                     <p style="color:rgba(255,255,255,0.4);font-size:0.85rem;margin-top:6px;letter-spacing:0.2px;">Acompanhamento em tempo real</p>
-                    <!-- DATA E HORA DE ATUALIZAÇÃO -->
                     <p id="header-last-update" style="color:rgba(255,255,255,0.25);font-size:0.75rem;margin-top:3px;letter-spacing:0.2px;">
                         🕐 <span id="header-update-text">Carregando...</span>
                     </p>
                 </div>
-
-                <!-- Direita: logo YouRH (símbolo verde + texto da fonte original) -->
                 <div class="relative z-10 flex items-center gap-4">
-                    <!-- Símbolo verde -->
                     <svg width="50" height="43" viewBox="0 0 66 44"><path d="M47.548,4.818v6.26l8.04-.435c-14.822,16-20.871,22.77-27.435,22.77-5.238,0-7.686-3.36-8.757-7.021,14.412-.5,19.342-9.319,19.342-14.846C38.738,6.092,35.533,0,26.72,0,17.191,0,12.512,9.451,11.881,18.583a8.806,8.806,0,0,1-5.065-8.314,17.589,17.589,0,0,1,1.3-6.724C6.529,2.918,1.7,1.282,1.7,1.282A30.663,30.663,0,0,0,0,10.628,15.478,15.478,0,0,0,12.252,25.76c1.725,9.229,8.252,14.106,15.9,14.106,9.9,0,16.675-8.377,32.28-24.966l-.5,8.56h6.26V4.818H47.548ZM26.6,6.975a4.651,4.651,0,0,1,5.048,4.967c0,3.827-4.487,8.147-12.371,8.147-.211,0-.419,0-.625-.009C18.81,12.6,21.721,6.975,26.6,6.975" fill="#61de75"/></svg>
-                    <!-- Texto YouRH em branco usando os paths originais da logo -->
                     <svg height="46" viewBox="75 -3 210 50" style="width:auto;">
                       <path d="M167.439,7.486c-4.842,12.1-10.076,24.144-13.871,33.435-4.253,10.01-8.244,15.311-14.918,15.311-4.711,0-7.917-1.963-9.684-5.1l7.852-6.543.785.066c.327,3.01,1.832,5.3,4.515,5.3,3.86,0,6.215-3.729,7.393-7.72-2.094,0-5.954-.131-8.048-.393-3.6-11.058-8.637-24.536-12.825-34.351a90.474,90.474,0,0,0,14.591,0c2.159,8.375,5.234,19.3,8.113,28.331,2.682-9.749,5.1-21.265,6.347-28.331a60.68,60.68,0,0,0,9.749,0" transform="translate(-45.794,-2.665)" fill="white"/>
                       <path d="M186.956,23.825c0-10.73,7.262-17.862,19.237-17.862s19.3,7.132,19.3,17.862c0,10.927-7.328,18.255-19.3,18.255s-19.237-7.328-19.237-18.255m24.667-.261c0-11.647-1.9-15.376-5.431-15.376-3.4,0-5.5,3.8-5.5,15.638,0,12.17,2.094,15.965,5.562,15.965,3.4,0,5.365-3.86,5.365-16.226" transform="translate(-66.555,-2.123)" fill="white"/>
@@ -117,8 +114,8 @@
                 </div>
             </div>
 
-            <!-- Main Cards Grid -->
-            <div class="grid grid-cols-3 gap-4 mb-4">
+            <!-- Main Cards Grid — agora 4 colunas -->
+            <div class="grid grid-cols-4 gap-4 mb-4">
                 <!-- NMRR Card -->
                 <div class="metric-card rounded-xl p-4 relative overflow-hidden">
                     <div class="flex justify-between items-start mb-2">
@@ -223,6 +220,41 @@
                         <span class="text-gray-500 text-xs">/ <span id="meta-conversao">--</span>%</span>
                     </div>
                     <div class="chart-container"><canvas id="chart3" class="mini-chart"></canvas></div>
+                </div>
+
+                <!-- ✅ NOVO: Pace do Mês Card -->
+                <div class="metric-card rounded-xl p-4 relative overflow-hidden" style="border-color: rgba(245,158,11,0.15);">
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: rgba(245,158,11,0.15);">
+                                <svg class="w-4 h-4" style="color:#fbbf24;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <span class="badge-amber px-2 py-0.5 rounded-full text-xs font-medium">
+                                📅 <span id="pace-nome-mes">--</span>
+                            </span>
+                        </div>
+                        <!-- Círculo de progresso do mês -->
+                        <div class="relative w-12 h-12">
+                            <svg class="w-12 h-12 circular-progress">
+                                <circle cx="24" cy="24" r="20" stroke="rgba(255,255,255,0.1)" stroke-width="3" fill="none"></circle>
+                                <circle id="circle-pace" cx="24" cy="24" r="20" stroke="#f59e0b" stroke-width="3" fill="none" stroke-dasharray="125.7" stroke-dashoffset="125.7" stroke-linecap="round" class="pace-ring-circle"></circle>
+                            </svg>
+                            <span id="pct-pace-circulo" class="absolute inset-0 flex items-center justify-center text-xs font-bold" style="color:#fbbf24;">--%</span>
+                        </div>
+                    </div>
+                    <div class="mb-1">
+                        <h3 class="text-gray-300 font-medium text-sm leading-tight">Pace do Mês</h3>
+                        <p class="text-gray-500 text-xs leading-tight">Progresso do calendário</p>
+                    </div>
+                    <div class="flex items-baseline gap-1 mb-1">
+                        <span class="text-2xl font-bold leading-none pace-value glow-amber">
+                            <span id="pace-pct">--%</span>
+                        </span>
+                        <span class="text-gray-500 text-xs">do mês</span>
+                    </div>
+                    <p class="text-gray-500 text-xs">Dia <span id="pace-dia-atual" class="text-gray-300 font-semibold">--</span> de <span id="pace-total-dias" class="text-gray-300 font-semibold">--</span> dias</p>
                 </div>
             </div>
 
@@ -348,12 +380,8 @@
     <div id="error-banner">⚠ Erro ao carregar dados. Tentando novamente...</div>
 
     <script>
-        // ============================================================
-        // ⚙️  CONFIGURAÇÃO — EDITE APENAS AQUI
-        // ============================================================
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbypdfL4usJs9I9i0LMNYNFFcFLFLT__mMtccbFQSyH41VrMqC6ZFII1FoEwlbvcmlswTA/exec';
-        const INTERVALO_ATUALIZACAO_MS = 60 * 1000; // 60 segundos
-        // ============================================================
+        const INTERVALO_ATUALIZACAO_MS = 60 * 1000;
 
         let charts = {};
 
@@ -362,7 +390,38 @@
             buscarDados();
             setInterval(buscarDados, INTERVALO_ATUALIZACAO_MS);
             atualizarMesAno();
+            calcularPaceMes(); // Calcula pace imediatamente
         });
+
+        // ============================================================
+        // ✅ PACE DO MÊS — calcula % de dias decorridos no mês atual
+        // ============================================================
+        function calcularPaceMes() {
+            const agora = new Date();
+            const diaAtual = agora.getDate();
+            const ano = agora.getFullYear();
+            const mes = agora.getMonth(); // 0-indexed
+
+            // Total de dias no mês atual
+            const totalDias = new Date(ano, mes + 1, 0).getDate();
+
+            // % de dias decorridos (considerando o dia atual como completo)
+            const pct = Math.round((diaAtual / totalDias) * 100);
+
+            const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
+                           'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+
+            // Atualiza os elementos do card
+            document.getElementById('pace-nome-mes').textContent = meses[mes];
+            document.getElementById('pace-pct').textContent = pct + '%';
+            document.getElementById('pct-pace-circulo').textContent = pct + '%';
+            document.getElementById('pace-dia-atual').textContent = diaAtual;
+            document.getElementById('pace-total-dias').textContent = totalDias;
+
+            // Anima o círculo
+            const offset = 125.7 - (125.7 * pct / 100);
+            document.getElementById('circle-pace').style.strokeDashoffset = offset;
+        }
 
         async function buscarDados() {
             try {
@@ -372,11 +431,8 @@
                 renderizarDashboard(dados);
                 document.getElementById('error-banner').style.display = 'none';
 
-                // Atualiza timestamp no rodapé
                 const horaFormatada = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
                 document.getElementById('last-update').textContent = 'Atualizado às ' + horaFormatada;
-
-                // Atualiza timestamp no header com data + hora completa
                 atualizarTimestampHeader();
 
             } catch (err) {
@@ -393,25 +449,21 @@
             const agora = new Date();
             const data = agora.toLocaleDateString('pt-BR');
             const hora = agora.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit', second: '2-digit'});
-
             document.getElementById('header-update-text').textContent =
                 `Última atualização: ${data}, ${hora}`;
         }
 
-        // Converte valor para número seguro (0 se NaN, null, #DIV/0!, etc.)
         function n(val) {
             const v = parseFloat(val);
             return (isNaN(v) || !isFinite(v)) ? 0 : v;
         }
 
-        // Calcula percentual com proteção contra divisão por zero
         function safePct(valor, meta) {
             if (!n(meta)) return 0;
             return Math.min(Math.round((n(valor) / n(meta)) * 100), 100);
         }
 
         function renderizarDashboard(d) {
-            // NMRR
             const nmrrPct = safePct(d.nmrr_valor, d.nmrr_meta);
             document.getElementById('val-nmrr').textContent = fmt(n(d.nmrr_valor));
             document.getElementById('meta-nmrr').textContent = fmt(n(d.nmrr_meta));
@@ -419,7 +471,6 @@
             document.getElementById('pct-nmrr').textContent = nmrrPct + '%';
             setCircle('circle-nmrr', nmrrPct);
 
-            // Vendas
             const vendasPct = safePct(d.vendas_valor, d.vendas_meta);
             document.getElementById('val-vendas').textContent = n(d.vendas_valor) || '--';
             document.getElementById('meta-vendas').textContent = n(d.vendas_meta) || '--';
@@ -427,7 +478,6 @@
             document.getElementById('pct-vendas').textContent = vendasPct + '%';
             setCircle('circle-vendas', vendasPct);
 
-            // Conversão — protegido contra #DIV/0! e NaN vindos da planilha
             const convVal  = n(d.conversao_valor);
             const convMeta = n(d.conversao_meta);
             const convVar  = n(d.conversao_variacao);
@@ -438,7 +488,6 @@
             document.getElementById('pct-conversao').textContent  = convPct + '%';
             setCircle('circle-conversao', convPct);
 
-            // Pipeline Morno
             const pipelineMeta = n(d.pipeline_meta);
             const mornoPct = safePct(d.pipeline_morno, pipelineMeta);
             document.getElementById('val-pipeline-morno').textContent = fmt(n(d.pipeline_morno));
@@ -447,13 +496,11 @@
             document.getElementById('pct-pipeline-morno').textContent = mornoPct + '%';
             document.getElementById('bar-pipeline-morno').style.width = mornoPct + '%';
 
-            // Pipeline Quente
             const quentePct = safePct(d.pipeline_quente, pipelineMeta);
             document.getElementById('val-pipeline-quente').textContent = fmt(n(d.pipeline_quente));
             document.getElementById('pct-pipeline-quente').textContent = quentePct + '%';
             document.getElementById('bar-pipeline-quente').style.width = quentePct + '%';
 
-            // Agendas / SQLs
             setBar('val-agendas', 'meta-agendas', 'pct-agendas', 'bar-agendas', d.agendas_valor, d.agendas_meta);
             setBar('val-sql-inbound', 'meta-sql-inbound', 'pct-sql-inbound', 'bar-sql-inbound', d.sqlin_valor, d.sqlin_meta);
             setBar('val-sql-outbound', 'meta-sql-outbound', 'pct-sql-outbound', 'bar-sql-outbound', d.sqlout_valor, d.sqlout_meta);
@@ -481,7 +528,6 @@
             const agora = new Date();
             const el = document.getElementById('mes-ano');
             if (el) el.textContent = meses[agora.getMonth()] + ' ' + agora.getFullYear();
-            // Mostra timestamp inicial imediatamente (antes do primeiro fetch)
             atualizarTimestampHeader();
         }
 
