@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,74 +9,288 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background: #0a0e1a; }
-        .glass-card { background: rgba(20, 25, 40, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .gradient-text { background: linear-gradient(135deg, #4ade80 0%, #3b82f6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .circular-progress { transform: rotate(-90deg); transform-origin: 50% 50%; }
-        .progress-ring-circle { transition: stroke-dashoffset 1s ease-in-out; }
-        .metric-card { background: linear-gradient(145deg, rgba(20, 30, 48, 0.8) 0%, rgba(10, 14, 26, 0.9) 100%); border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.3s ease; }
-        .metric-card:hover { transform: translateY(-2px); border-color: rgba(74, 222, 128, 0.2); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); }
-        .pipeline-card { background: linear-gradient(145deg, rgba(30, 25, 20, 0.8) 0%, rgba(15, 12, 10, 0.9) 100%); border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.3s ease; }
-        .pipeline-card:hover { transform: translateY(-2px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); }
-        .pipeline-warm { border-color: rgba(251, 146, 60, 0.2); }
-        .pipeline-warm:hover { border-color: rgba(251, 146, 60, 0.4); }
-        .pipeline-hot { border-color: rgba(239, 68, 68, 0.2); }
-        .pipeline-hot:hover { border-color: rgba(239, 68, 68, 0.4); }
-        .badge-green { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
-        .badge-blue { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
-        .badge-purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
-        .badge-amber { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
-        .badge-meta { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
-        .progress-bar-bg { background: rgba(255, 255, 255, 0.05); }
-        .progress-bar-fill { transition: width 1s ease-out; box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); }
-        .glow-text { text-shadow: 0 0 20px rgba(74, 222, 128, 0.5); }
-        .glow-orange { text-shadow: 0 0 20px rgba(251, 146, 60, 0.5); }
-        .glow-red { text-shadow: 0 0 20px rgba(239, 68, 68, 0.5); }
-        .glow-amber { text-shadow: 0 0 20px rgba(245, 158, 11, 0.5); }
-        @keyframes pulse-glow { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
-        .animate-pulse-slow { animation: pulse-glow 3s infinite; }
-        .chart-container { position: relative; height: 45px; overflow: hidden; }
-        .mini-chart { position: absolute; bottom: 0; left: 0; right: 0; }
-        .pipeline-value { background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .pipeline-value-hot { background: linear-gradient(135deg, #f87171 0%, #dc2626 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .pace-value { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .logo-box { background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%); }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0e1a;
+        }
+
+        .glass-card {
+            background: rgba(20, 25, 40, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #4ade80 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .circular-progress {
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+
+        .progress-ring-circle {
+            transition: stroke-dashoffset 1s ease-in-out;
+        }
+
+        .metric-card {
+            background: linear-gradient(145deg, rgba(20, 30, 48, 0.8) 0%, rgba(10, 14, 26, 0.9) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(74, 222, 128, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .pipeline-card {
+            background: linear-gradient(145deg, rgba(30, 25, 20, 0.8) 0%, rgba(15, 12, 10, 0.9) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .pipeline-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .pipeline-warm {
+            border-color: rgba(251, 146, 60, 0.2);
+        }
+
+        .pipeline-warm:hover {
+            border-color: rgba(251, 146, 60, 0.4);
+        }
+
+        .pipeline-hot {
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+
+        .pipeline-hot:hover {
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+
+        .badge-green {
+            background: rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .badge-blue {
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .badge-purple {
+            background: rgba(168, 85, 247, 0.15);
+            color: #c084fc;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .badge-amber {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .badge-meta {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.4);
+        }
+
+        .progress-bar-bg {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .progress-bar-fill {
+            transition: width 1s ease-out;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .glow-text {
+            text-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
+        }
+
+        .glow-orange {
+            text-shadow: 0 0 20px rgba(251, 146, 60, 0.5);
+        }
+
+        .glow-red {
+            text-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+        }
+
+        .glow-amber {
+            text-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .animate-pulse-slow {
+            animation: pulse-glow 3s infinite;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 45px;
+            overflow: hidden;
+        }
+
+        .mini-chart {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .pipeline-value {
+            background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pipeline-value-hot {
+            background: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pace-value {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-box {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+        }
 
         /* Status de carregamento */
         #loading-overlay {
-            position: fixed; inset: 0; background: #0a0e1a;
-            display: flex; align-items: center; justify-content: center;
-            z-index: 100; transition: opacity 0.5s;
+            position: fixed;
+            inset: 0;
+            background: #0a0e1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            transition: opacity 0.5s;
         }
+
         .loading-spinner {
-            width: 40px; height: 40px;
-            border: 3px solid rgba(255,255,255,0.1);
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
             border-top-color: #4ade80;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
         /* Indicador de última atualização */
         #last-update {
-            position: fixed; bottom: 12px; right: 16px;
-            font-size: 11px; color: rgba(255,255,255,0.3);
+            position: fixed;
+            bottom: 12px;
+            right: 16px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.3);
         }
+
         #error-banner {
             display: none;
-            position: fixed; bottom: 12px; left: 16px;
-            background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239,68,68,0.3);
-            color: #f87171; font-size: 11px; padding: 6px 12px; border-radius: 8px;
+            position: fixed;
+            bottom: 12px;
+            left: 16px;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #f87171;
+            font-size: 11px;
+            padding: 6px 12px;
+            border-radius: 8px;
         }
 
         /* Pulse dot animado */
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
-        .dot-live { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #4ade80; animation: blink 2s infinite; vertical-align: middle; margin-right: 5px; }
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.2;
+            }
+        }
+
+        .dot-live {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #4ade80;
+            animation: blink 2s infinite;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
 
         /* Pace card círculo */
-        .pace-ring-circle { transition: stroke-dashoffset 1.2s ease-in-out; }
+        .pace-ring-circle {
+            transition: stroke-dashoffset 1.2s ease-in-out;
+        }
+
+        /* Escalabilidade dinâmica para TV */
+        @media (min-width: 1536px) {
+            html {
+                font-size: 1.20rem;
+            }
+
+            .chart-container {
+                height: 65px;
+            }
+        }
+
+        @media (min-width: 1920px) {
+            html {
+                font-size: 1.45rem;
+            }
+
+            .chart-container {
+                height: 85px;
+            }
+        }
+
+        @media (min-width: 2560px) {
+            html {
+                font-size: 2rem;
+            }
+        }
     </style>
 </head>
+
 <body class="min-h-screen text-white">
 
     <!-- LOADING OVERLAY -->
@@ -88,28 +303,54 @@
 
     <!-- DASHBOARD -->
     <div id="dashboard-area" class="p-4">
-        <div class="max-w-6xl mx-auto">
+        <div class="w-full max-w-[96vw] mx-auto">
             <!-- Header -->
-            <div class="relative flex items-center justify-between mb-6 rounded-2xl overflow-hidden px-8 py-5" style="background: linear-gradient(135deg, #050a05 0%, #0a1a0a 60%, #0a0e1a 100%); border: 1px solid rgba(97,222,117,0.2); min-height: 110px;">
-                <div style="position:absolute;top:-60px;left:-60px;width:400px;height:260px;background:radial-gradient(ellipse,rgba(97,222,117,0.1) 0%,transparent 70%);pointer-events:none;"></div>
-                <div style="position:absolute;right:20px;top:-30px;opacity:0.08;transform:scale(3.5);transform-origin:right top;pointer-events:none;">
-                    <svg width="66" height="44" viewBox="0 0 66 44"><path d="M47.548,4.818v6.26l8.04-.435c-14.822,16-20.871,22.77-27.435,22.77-5.238,0-7.686-3.36-8.757-7.021,14.412-.5,19.342-9.319,19.342-14.846C38.738,6.092,35.533,0,26.72,0,17.191,0,12.512,9.451,11.881,18.583a8.806,8.806,0,0,1-5.065-8.314,17.589,17.589,0,0,1,1.3-6.724C6.529,2.918,1.7,1.282,1.7,1.282A30.663,30.663,0,0,0,0,10.628,15.478,15.478,0,0,0,12.252,25.76c1.725,9.229,8.252,14.106,15.9,14.106,9.9,0,16.675-8.377,32.28-24.966l-.5,8.56h6.26V4.818H47.548ZM26.6,6.975a4.651,4.651,0,0,1,5.048,4.967c0,3.827-4.487,8.147-12.371,8.147-.211,0-.419,0-.625-.009C18.81,12.6,21.721,6.975,26.6,6.975" fill="#61de75"/></svg>
+            <div class="relative flex items-center justify-between mb-6 rounded-2xl overflow-hidden px-8 py-5"
+                style="background: linear-gradient(135deg, #050a05 0%, #0a1a0a 60%, #0a0e1a 100%); border: 1px solid rgba(97,222,117,0.2); min-height: 110px;">
+                <div
+                    style="position:absolute;top:-60px;left:-60px;width:400px;height:260px;background:radial-gradient(ellipse,rgba(97,222,117,0.1) 0%,transparent 70%);pointer-events:none;">
+                </div>
+                <div
+                    style="position:absolute;right:20px;top:-30px;opacity:0.08;transform:scale(3.5);transform-origin:right top;pointer-events:none;">
+                    <svg width="66" height="44" viewBox="0 0 66 44">
+                        <path
+                            d="M47.548,4.818v6.26l8.04-.435c-14.822,16-20.871,22.77-27.435,22.77-5.238,0-7.686-3.36-8.757-7.021,14.412-.5,19.342-9.319,19.342-14.846C38.738,6.092,35.533,0,26.72,0,17.191,0,12.512,9.451,11.881,18.583a8.806,8.806,0,0,1-5.065-8.314,17.589,17.589,0,0,1,1.3-6.724C6.529,2.918,1.7,1.282,1.7,1.282A30.663,30.663,0,0,0,0,10.628,15.478,15.478,0,0,0,12.252,25.76c1.725,9.229,8.252,14.106,15.9,14.106,9.9,0,16.675-8.377,32.28-24.966l-.5,8.56h6.26V4.818H47.548ZM26.6,6.975a4.651,4.651,0,0,1,5.048,4.967c0,3.827-4.487,8.147-12.371,8.147-.211,0-.419,0-.625-.009C18.81,12.6,21.721,6.975,26.6,6.975"
+                            fill="#61de75" />
+                    </svg>
                 </div>
                 <div class="relative z-10">
-                    <h1 style="font-size:2.8rem;font-weight:900;line-height:1;background:linear-gradient(90deg,#61de75 0%,#a8f5b4 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-1px;">Dashboard de Vendas</h1>
-                    <p style="color:rgba(255,255,255,0.4);font-size:0.85rem;margin-top:6px;letter-spacing:0.2px;">Acompanhamento em tempo real</p>
-                    <p id="header-last-update" style="color:rgba(255,255,255,0.25);font-size:0.75rem;margin-top:3px;letter-spacing:0.2px;">
+                    <h1
+                        style="font-size:2.8rem;font-weight:900;line-height:1;background:linear-gradient(90deg,#61de75 0%,#a8f5b4 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-1px;">
+                        Dashboard de Vendas</h1>
+                    <p style="color:rgba(255,255,255,0.4);font-size:0.85rem;margin-top:6px;letter-spacing:0.2px;">
+                        Acompanhamento em tempo real</p>
+                    <p id="header-last-update"
+                        style="color:rgba(255,255,255,0.25);font-size:0.75rem;margin-top:3px;letter-spacing:0.2px;">
                         🕐 <span id="header-update-text">Carregando...</span>
                     </p>
                 </div>
                 <div class="relative z-10 flex items-center gap-4">
-                    <svg width="50" height="43" viewBox="0 0 66 44"><path d="M47.548,4.818v6.26l8.04-.435c-14.822,16-20.871,22.77-27.435,22.77-5.238,0-7.686-3.36-8.757-7.021,14.412-.5,19.342-9.319,19.342-14.846C38.738,6.092,35.533,0,26.72,0,17.191,0,12.512,9.451,11.881,18.583a8.806,8.806,0,0,1-5.065-8.314,17.589,17.589,0,0,1,1.3-6.724C6.529,2.918,1.7,1.282,1.7,1.282A30.663,30.663,0,0,0,0,10.628,15.478,15.478,0,0,0,12.252,25.76c1.725,9.229,8.252,14.106,15.9,14.106,9.9,0,16.675-8.377,32.28-24.966l-.5,8.56h6.26V4.818H47.548ZM26.6,6.975a4.651,4.651,0,0,1,5.048,4.967c0,3.827-4.487,8.147-12.371,8.147-.211,0-.419,0-.625-.009C18.81,12.6,21.721,6.975,26.6,6.975" fill="#61de75"/></svg>
+                    <svg width="50" height="43" viewBox="0 0 66 44">
+                        <path
+                            d="M47.548,4.818v6.26l8.04-.435c-14.822,16-20.871,22.77-27.435,22.77-5.238,0-7.686-3.36-8.757-7.021,14.412-.5,19.342-9.319,19.342-14.846C38.738,6.092,35.533,0,26.72,0,17.191,0,12.512,9.451,11.881,18.583a8.806,8.806,0,0,1-5.065-8.314,17.589,17.589,0,0,1,1.3-6.724C6.529,2.918,1.7,1.282,1.7,1.282A30.663,30.663,0,0,0,0,10.628,15.478,15.478,0,0,0,12.252,25.76c1.725,9.229,8.252,14.106,15.9,14.106,9.9,0,16.675-8.377,32.28-24.966l-.5,8.56h6.26V4.818H47.548ZM26.6,6.975a4.651,4.651,0,0,1,5.048,4.967c0,3.827-4.487,8.147-12.371,8.147-.211,0-.419,0-.625-.009C18.81,12.6,21.721,6.975,26.6,6.975"
+                            fill="#61de75" />
+                    </svg>
                     <svg height="46" viewBox="75 -3 210 50" style="width:auto;">
-                      <path d="M167.439,7.486c-4.842,12.1-10.076,24.144-13.871,33.435-4.253,10.01-8.244,15.311-14.918,15.311-4.711,0-7.917-1.963-9.684-5.1l7.852-6.543.785.066c.327,3.01,1.832,5.3,4.515,5.3,3.86,0,6.215-3.729,7.393-7.72-2.094,0-5.954-.131-8.048-.393-3.6-11.058-8.637-24.536-12.825-34.351a90.474,90.474,0,0,0,14.591,0c2.159,8.375,5.234,19.3,8.113,28.331,2.682-9.749,5.1-21.265,6.347-28.331a60.68,60.68,0,0,0,9.749,0" transform="translate(-45.794,-2.665)" fill="white"/>
-                      <path d="M186.956,23.825c0-10.73,7.262-17.862,19.237-17.862s19.3,7.132,19.3,17.862c0,10.927-7.328,18.255-19.3,18.255s-19.237-7.328-19.237-18.255m24.667-.261c0-11.647-1.9-15.376-5.431-15.376-3.4,0-5.5,3.8-5.5,15.638,0,12.17,2.094,15.965,5.562,15.965,3.4,0,5.365-3.86,5.365-16.226" transform="translate(-66.555,-2.123)" fill="white"/>
-                      <path d="M287.188,41.706h-5.5L275.345,33c-1.505,5.758-5.823,9.618-12.17,9.618-6.608,0-11.712-3.4-11.777-14.133-.066-8.375,0-14.329-.131-21a90.885,90.885,0,0,0,13.348,0c-.066,12.3,0,11.385.131,20.807.065,6.805.981,9.226,3.6,9.16,3.468-.065,5.562-4.318,5.562-12.759,0-8.9,0-10.8-.2-17.208a92.672,92.672,0,0,0,13.478,0c-.327,11.581-.392,22.639,0,34.22" transform="translate(-89.449,-2.665)" fill="white"/>
-                      <path d="M361.8,41.566a58.7,58.7,0,0,1-13.564,0A102.564,102.564,0,0,0,338.267,28.9c0,4.139.05,8.378.149,12.666a37.558,37.558,0,0,1-10.572,0c.249-11.669.249-21.992,0-34.309A88.294,88.294,0,0,1,341.158,6.01c4.389,0,17.654.549,17.654,10.672,0,8.128-9.525,11.968-18.052,11.819A102.671,102.671,0,0,0,352.428,30c2.494,3.191,5.585,7.43,9.375,11.569m-23.587-14.91a21.961,21.961,0,0,0,2.244.149c4.04,0,6.982-2.494,6.982-9.525,0-6.931-2.743-9.126-6.383-9.126-.7,0-1.646.1-2.643.2-.149,5.934-.2,12.067-.2,18.3" transform="translate(-116.71,-2.14)" fill="white"/>
-                      <path d="M416.777,41.738a42.058,42.058,0,0,1-10.622,0c.1-5.435.2-10.871.2-16.307-3.889-.1-7.879-.1-11.718,0,0,5.436.1,10.872.2,16.307a42.058,42.058,0,0,1-10.622,0c.249-11.619.249-23.288,0-34.907a42.058,42.058,0,0,1,10.622,0c-.1,5.236-.15,10.472-.2,15.708,3.84.1,7.829.1,11.718,0-.05-5.236-.1-10.472-.2-15.708a42.058,42.058,0,0,1,10.622,0c-.249,11.619-.249,23.288,0,34.907" transform="translate(-136.777,-2.312)" fill="white"/>
+                        <path
+                            d="M167.439,7.486c-4.842,12.1-10.076,24.144-13.871,33.435-4.253,10.01-8.244,15.311-14.918,15.311-4.711,0-7.917-1.963-9.684-5.1l7.852-6.543.785.066c.327,3.01,1.832,5.3,4.515,5.3,3.86,0,6.215-3.729,7.393-7.72-2.094,0-5.954-.131-8.048-.393-3.6-11.058-8.637-24.536-12.825-34.351a90.474,90.474,0,0,0,14.591,0c2.159,8.375,5.234,19.3,8.113,28.331,2.682-9.749,5.1-21.265,6.347-28.331a60.68,60.68,0,0,0,9.749,0"
+                            transform="translate(-45.794,-2.665)" fill="white" />
+                        <path
+                            d="M186.956,23.825c0-10.73,7.262-17.862,19.237-17.862s19.3,7.132,19.3,17.862c0,10.927-7.328,18.255-19.3,18.255s-19.237-7.328-19.237-18.255m24.667-.261c0-11.647-1.9-15.376-5.431-15.376-3.4,0-5.5,3.8-5.5,15.638,0,12.17,2.094,15.965,5.562,15.965,3.4,0,5.365-3.86,5.365-16.226"
+                            transform="translate(-66.555,-2.123)" fill="white" />
+                        <path
+                            d="M287.188,41.706h-5.5L275.345,33c-1.505,5.758-5.823,9.618-12.17,9.618-6.608,0-11.712-3.4-11.777-14.133-.066-8.375,0-14.329-.131-21a90.885,90.885,0,0,0,13.348,0c-.066,12.3,0,11.385.131,20.807.065,6.805.981,9.226,3.6,9.16,3.468-.065,5.562-4.318,5.562-12.759,0-8.9,0-10.8-.2-17.208a92.672,92.672,0,0,0,13.478,0c-.327,11.581-.392,22.639,0,34.22"
+                            transform="translate(-89.449,-2.665)" fill="white" />
+                        <path
+                            d="M361.8,41.566a58.7,58.7,0,0,1-13.564,0A102.564,102.564,0,0,0,338.267,28.9c0,4.139.05,8.378.149,12.666a37.558,37.558,0,0,1-10.572,0c.249-11.669.249-21.992,0-34.309A88.294,88.294,0,0,1,341.158,6.01c4.389,0,17.654.549,17.654,10.672,0,8.128-9.525,11.968-18.052,11.819A102.671,102.671,0,0,0,352.428,30c2.494,3.191,5.585,7.43,9.375,11.569m-23.587-14.91a21.961,21.961,0,0,0,2.244.149c4.04,0,6.982-2.494,6.982-9.525,0-6.931-2.743-9.126-6.383-9.126-.7,0-1.646.1-2.643.2-.149,5.934-.2,12.067-.2,18.3"
+                            transform="translate(-116.71,-2.14)" fill="white" />
+                        <path
+                            d="M416.777,41.738a42.058,42.058,0,0,1-10.622,0c.1-5.435.2-10.871.2-16.307-3.889-.1-7.879-.1-11.718,0,0,5.436.1,10.872.2,16.307a42.058,42.058,0,0,1-10.622,0c.249-11.619.249-23.288,0-34.907a42.058,42.058,0,0,1,10.622,0c-.1,5.236-.15,10.472-.2,15.708,3.84.1,7.829.1,11.718,0-.05-5.236-.1-10.472-.2-15.708a42.058,42.058,0,0,1,10.622,0c-.249,11.619-.249,23.288,0,34.907"
+                            transform="translate(-136.777,-2.312)" fill="white" />
                     </svg>
                 </div>
             </div>
@@ -121,23 +362,32 @@
                     <div class="flex justify-between items-start mb-2">
                         <div class="flex items-center gap-2">
                             <div class="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
-                                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                    </path>
                                 </svg>
                             </div>
-                            <span class="badge-green px-2 py-0.5 rounded-full text-xs font-medium flex items-center gap-1">
+                            <span
+                                class="badge-green px-2 py-0.5 rounded-full text-xs font-medium flex items-center gap-1">
                                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
                                 </svg>
                                 +R$ <span id="nmrr-variacao">--</span>
                             </span>
                         </div>
                         <div class="relative w-12 h-12">
-                            <svg class="w-12 h-12 circular-progress">
-                                <circle cx="24" cy="24" r="20" stroke="rgba(255,255,255,0.1)" stroke-width="3" fill="none"></circle>
-                                <circle id="circle-nmrr" cx="24" cy="24" r="20" stroke="#3b82f6" stroke-width="3" fill="none" stroke-dasharray="125.7" stroke-dashoffset="125.7" stroke-linecap="round" class="progress-ring-circle"></circle>
+                            <svg class="w-12 h-12 circular-progress" viewBox="0 0 48 48">
+                                <circle cx="24" cy="24" r="20" stroke="rgba(255,255,255,0.1)" stroke-width="3"
+                                    fill="none"></circle>
+                                <circle id="circle-nmrr" cx="24" cy="24" r="20" stroke="#3b82f6" stroke-width="3"
+                                    fill="none" stroke-dasharray="125.7" stroke-dashoffset="125.7"
+                                    stroke-linecap="round" class="progress-ring-circle"></circle>
                             </svg>
-                            <span id="pct-nmrr" class="absolute inset-0 flex items-center justify-center text-sm font-bold">--%</span>
+                            <span id="pct-nmrr"
+                                class="absolute inset-0 flex items-center justify-center text-sm font-bold">--%</span>
                         </div>
                     </div>
                     <div class="mb-1">
@@ -156,23 +406,32 @@
                     <div class="flex justify-between items-start mb-2">
                         <div class="flex items-center gap-2">
                             <div class="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
-                                <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                                    </path>
                                 </svg>
                             </div>
-                            <span class="badge-blue px-2 py-0.5 rounded-full text-xs font-medium flex items-center gap-1">
+                            <span
+                                class="badge-blue px-2 py-0.5 rounded-full text-xs font-medium flex items-center gap-1">
                                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
                                 </svg>
                                 +<span id="vendas-variacao">-</span>
                             </span>
                         </div>
                         <div class="relative w-12 h-12">
-                            <svg class="w-12 h-12 circular-progress">
-                                <circle cx="24" cy="24" r="20" stroke="rgba(255,255,255,0.1)" stroke-width="3" fill="none"></circle>
-                                <circle id="circle-vendas" cx="24" cy="24" r="20" stroke="#3b82f6" stroke-width="3" fill="none" stroke-dasharray="125.7" stroke-dashoffset="125.7" stroke-linecap="round" class="progress-ring-circle"></circle>
+                            <svg class="w-12 h-12 circular-progress" viewBox="0 0 48 48">
+                                <circle cx="24" cy="24" r="20" stroke="rgba(255,255,255,0.1)" stroke-width="3"
+                                    fill="none"></circle>
+                                <circle id="circle-vendas" cx="24" cy="24" r="20" stroke="#3b82f6" stroke-width="3"
+                                    fill="none" stroke-dasharray="125.7" stroke-dashoffset="125.7"
+                                    stroke-linecap="round" class="progress-ring-circle"></circle>
                             </svg>
-                            <span id="pct-vendas" class="absolute inset-0 flex items-center justify-center text-sm font-bold">--%</span>
+                            <span id="pct-vendas"
+                                class="absolute inset-0 flex items-center justify-center text-sm font-bold">--%</span>
                         </div>
                     </div>
                     <div class="mb-1">
@@ -191,24 +450,33 @@
                     <div class="flex justify-between items-start mb-2">
                         <div class="flex items-center gap-2">
                             <div class="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                                <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
+                                <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
                                 </svg>
                             </div>
-                            <span class="badge-purple px-2 py-0.5 rounded-full text-xs font-medium flex items-center gap-1">
+                            <span
+                                class="badge-purple px-2 py-0.5 rounded-full text-xs font-medium flex items-center gap-1">
                                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
                                 </svg>
                                 +<span id="conversao-variacao">-</span>%
                             </span>
                         </div>
                         <div class="relative w-12 h-12">
-                            <svg class="w-12 h-12 circular-progress">
-                                <circle cx="24" cy="24" r="20" stroke="rgba(255,255,255,0.1)" stroke-width="3" fill="none"></circle>
-                                <circle id="circle-conversao" cx="24" cy="24" r="20" stroke="#3b82f6" stroke-width="3" fill="none" stroke-dasharray="125.7" stroke-dashoffset="125.7" stroke-linecap="round" class="progress-ring-circle"></circle>
+                            <svg class="w-12 h-12 circular-progress" viewBox="0 0 48 48">
+                                <circle cx="24" cy="24" r="20" stroke="rgba(255,255,255,0.1)" stroke-width="3"
+                                    fill="none"></circle>
+                                <circle id="circle-conversao" cx="24" cy="24" r="20" stroke="#3b82f6" stroke-width="3"
+                                    fill="none" stroke-dasharray="125.7" stroke-dashoffset="125.7"
+                                    stroke-linecap="round" class="progress-ring-circle"></circle>
                             </svg>
-                            <span id="pct-conversao" class="absolute inset-0 flex items-center justify-center text-sm font-bold">--%</span>
+                            <span id="pct-conversao"
+                                class="absolute inset-0 flex items-center justify-center text-sm font-bold">--%</span>
                         </div>
                     </div>
                     <div class="mb-1">
@@ -223,25 +491,38 @@
                 </div>
 
                 <!-- ✅ NOVO: Pace do Mês Card -->
-                <div class="metric-card rounded-xl p-4 relative overflow-hidden" style="border-color: rgba(245,158,11,0.15);">
+                <div class="metric-card rounded-xl p-4 relative overflow-hidden"
+                    style="border-color: rgba(245,158,11,0.15);">
                     <div class="flex justify-between items-start mb-2">
                         <div class="flex items-center gap-2">
-                            <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: rgba(245,158,11,0.15);">
-                                <svg class="w-4 h-4" style="color:#fbbf24;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            <div class="w-8 h-8 rounded-lg flex items-center justify-center"
+                                style="background: rgba(245,158,11,0.15);">
+                                <svg class="w-4 h-4" style="color:#fbbf24;" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                    </path>
                                 </svg>
                             </div>
-                            <span class="badge-amber px-2 py-0.5 rounded-full text-xs font-medium">
-                                📅 <span id="pace-nome-mes">--</span>
+                            <span class="badge-amber px-2 py-0.5 rounded-full text-xs font-medium flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                <span id="pace-nome-mes">--</span>
                             </span>
                         </div>
                         <!-- Círculo de progresso do mês -->
                         <div class="relative w-12 h-12">
-                            <svg class="w-12 h-12 circular-progress">
-                                <circle cx="24" cy="24" r="20" stroke="rgba(255,255,255,0.1)" stroke-width="3" fill="none"></circle>
-                                <circle id="circle-pace" cx="24" cy="24" r="20" stroke="#f59e0b" stroke-width="3" fill="none" stroke-dasharray="125.7" stroke-dashoffset="125.7" stroke-linecap="round" class="pace-ring-circle"></circle>
+                            <svg class="w-12 h-12 circular-progress" viewBox="0 0 48 48">
+                                <circle cx="24" cy="24" r="20" stroke="rgba(255,255,255,0.1)" stroke-width="3"
+                                    fill="none"></circle>
+                                <circle id="circle-pace" cx="24" cy="24" r="20" stroke="#f59e0b" stroke-width="3"
+                                    fill="none" stroke-dasharray="125.7" stroke-dashoffset="125.7"
+                                    stroke-linecap="round" class="pace-ring-circle"></circle>
                             </svg>
-                            <span id="pct-pace-circulo" class="absolute inset-0 flex items-center justify-center text-xs font-bold" style="color:#fbbf24;">--%</span>
+                            <span id="pct-pace-circulo"
+                                class="absolute inset-0 flex items-center justify-center text-xs font-bold"
+                                style="color:#fbbf24;">--%</span>
                         </div>
                     </div>
                     <div class="mb-1">
@@ -254,7 +535,9 @@
                         </span>
                         <span class="text-gray-500 text-xs">do mês</span>
                     </div>
-                    <p class="text-gray-500 text-xs">Dia <span id="pace-dia-atual" class="text-gray-300 font-semibold">--</span> de <span id="pace-total-dias" class="text-gray-300 font-semibold">--</span> dias</p>
+                    <p class="text-gray-500 text-xs">Dia <span id="pace-dia-atual"
+                            class="text-gray-300 font-semibold">--</span> de <span id="pace-total-dias"
+                            class="text-gray-300 font-semibold">--</span> dias</p>
                 </div>
             </div>
 
@@ -263,7 +546,9 @@
                 <div class="pipeline-card pipeline-warm rounded-xl p-4 relative overflow-hidden">
                     <div class="flex justify-between items-center mb-2">
                         <div class="flex items-center gap-2">
-                            <div class="text-xl">🔥</div>
+                            <svg class="w-6 h-6 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path>
+                            </svg>
                             <p class="text-gray-400 text-sm">Pipeline Morno</p>
                         </div>
                         <div class="text-right">
@@ -272,18 +557,26 @@
                         </div>
                     </div>
                     <div class="flex items-baseline gap-2 mb-2">
-                        <span class="text-3xl font-bold pipeline-value glow-orange leading-none">R$ <span id="val-pipeline-morno">--</span></span>
+                        <span class="text-3xl font-bold pipeline-value glow-orange leading-none">R$ <span
+                                id="val-pipeline-morno">--</span></span>
                         <span class="text-gray-500 text-xs">/ R$ <span id="meta-pipeline">--</span></span>
                     </div>
                     <div class="progress-bar-bg rounded-full h-1.5 overflow-hidden">
-                        <div id="bar-pipeline-morno" class="progress-bar-fill h-full bg-gradient-to-r from-orange-400 to-orange-600 rounded-full shadow-lg shadow-orange-500/30" style="width: 0%"></div>
+                        <div id="bar-pipeline-morno"
+                            class="progress-bar-fill h-full bg-gradient-to-r from-orange-400 to-orange-600 rounded-full shadow-lg shadow-orange-500/30"
+                            style="width: 0%"></div>
                     </div>
                 </div>
 
                 <div class="pipeline-card pipeline-hot rounded-xl p-4 relative overflow-hidden">
                     <div class="flex justify-between items-center mb-2">
                         <div class="flex items-center gap-2">
-                            <div class="text-xl">🚀</div>
+                            <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
+                                <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
+                                <path d="M9 12H4s.55-3.03 2-5c1.62-2.2 5-3 5-3"></path>
+                                <path d="M12 15v5s3.03-.55 5-2c2.2-1.62 3-5 3-5"></path>
+                            </svg>
                             <p class="text-gray-400 text-sm">Pipeline Quente</p>
                         </div>
                         <div class="text-right">
@@ -292,11 +585,14 @@
                         </div>
                     </div>
                     <div class="flex items-baseline gap-2 mb-2">
-                        <span class="text-3xl font-bold pipeline-value-hot glow-red leading-none">R$ <span id="val-pipeline-quente">--</span></span>
+                        <span class="text-3xl font-bold pipeline-value-hot glow-red leading-none">R$ <span
+                                id="val-pipeline-quente">--</span></span>
                         <span class="text-gray-500 text-xs">/ R$ <span id="meta-pipeline-display">--</span></span>
                     </div>
                     <div class="progress-bar-bg rounded-full h-1.5 overflow-hidden">
-                        <div id="bar-pipeline-quente" class="progress-bar-fill h-full bg-gradient-to-r from-red-400 to-red-600 rounded-full shadow-lg shadow-red-500/30" style="width: 0%"></div>
+                        <div id="bar-pipeline-quente"
+                            class="progress-bar-fill h-full bg-gradient-to-r from-red-400 to-red-600 rounded-full shadow-lg shadow-red-500/30"
+                            style="width: 0%"></div>
                     </div>
                 </div>
             </div>
@@ -318,7 +614,9 @@
                         </div>
                     </div>
                     <div class="progress-bar-bg rounded-full h-1.5 overflow-hidden">
-                        <div id="bar-agendas" class="progress-bar-fill h-full bg-gradient-to-r from-orange-400 to-yellow-400 rounded-full" style="width: 0%"></div>
+                        <div id="bar-agendas"
+                            class="progress-bar-fill h-full bg-gradient-to-r from-orange-400 to-yellow-400 rounded-full"
+                            style="width: 0%"></div>
                     </div>
                 </div>
 
@@ -337,7 +635,9 @@
                         </div>
                     </div>
                     <div class="progress-bar-bg rounded-full h-1.5 overflow-hidden">
-                        <div id="bar-sql-inbound" class="progress-bar-fill h-full bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full" style="width: 0%"></div>
+                        <div id="bar-sql-inbound"
+                            class="progress-bar-fill h-full bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full"
+                            style="width: 0%"></div>
                     </div>
                 </div>
 
@@ -356,17 +656,24 @@
                         </div>
                     </div>
                     <div class="progress-bar-bg rounded-full h-1.5 overflow-hidden">
-                        <div id="bar-sql-outbound" class="progress-bar-fill h-full bg-gradient-to-r from-purple-400 to-pink-400 rounded-full" style="width: 0%"></div>
+                        <div id="bar-sql-outbound"
+                            class="progress-bar-fill h-full bg-gradient-to-r from-purple-400 to-pink-400 rounded-full"
+                            style="width: 0%"></div>
                     </div>
                 </div>
             </div>
 
             <!-- Motivational Banner -->
-            <div class="glass-card rounded-xl p-4 text-center relative overflow-hidden group cursor-pointer hover:border-emerald-500/30 transition-all duration-300 bg-gradient-to-r from-emerald-900/20 to-blue-900/20">
-                <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div
+                class="glass-card rounded-xl p-4 text-center relative overflow-hidden group cursor-pointer hover:border-emerald-500/30 transition-all duration-300 bg-gradient-to-r from-emerald-900/20 to-blue-900/20">
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                </div>
                 <div class="relative z-10 flex items-center justify-center gap-2">
-                    <svg class="w-5 h-5 text-emerald-400 animate-pulse-slow" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path>
+                    <svg id="mensagem-icon" class="w-5 h-5 text-emerald-400 animate-pulse-slow" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z"
+                            clip-rule="evenodd"></path>
                     </svg>
                     <p id="mensagem-motivacional" class="text-base font-semibold text-emerald-400">
                         Pipeline aquecendo! Hora de transformar oportunidades em resultados!
@@ -383,15 +690,59 @@
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbypdfL4usJs9I9i0LMNYNFFcFLFLT__mMtccbFQSyH41VrMqC6ZFII1FoEwlbvcmlswTA/exec';
         const INTERVALO_ATUALIZACAO_MS = 60 * 1000;
 
+        const FRASE_CONFIG = {
+            meta_batida: [
+                "Meta batida! O topo é apenas o começo para esse time!",
+                "Extraordinário! Meta alcançada, agora vamos buscar o recorde histórico!",
+                "Missão cumprida! Vocês provaram que não há limites para a Yourh!",
+                "100% realizado! Hora de celebrar e calibrar os próximos desafios!"
+            ],
+            excelente: [
+                "Ritmo insano! Estamos atropelando o cronograma mensal!",
+                "Performance de elite! O pace está verde e a meta está logo ali!",
+                "Velocidade máxima! Mantendo esse ritmo, a meta será batida antes do esperado!",
+                "Que execução! O time está em sintonia total hoje!"
+            ],
+            no_ritmo: [
+                "Foco total! Cada SQL conta para chegarmos ao objetivo.",
+                "Constância é a chave. Vamos manter a cadência e fechar esses contratos!",
+                "Pipeline aquecendo! Hora de transformar oportunidades em resultados!",
+                "Ritmo sólido. Vamos acelerar os 'follow-ups' para garantir o mês!"
+            ],
+            alerta: [
+                "Alerta de ritmo: Precisamos imprimir mais velocidade para buscar o resultado!",
+                "O tempo voa! Vamos focar nas oportunidades 'quentes' do pipeline!",
+                "Jogo ainda não acabou! Hora de virar o jogo com foco total em fechamentos!",
+                "A meta nos desafia. Como vamos reagir hoje? Vamos pra cima!"
+            ]
+        };
+
         let charts = {};
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             initCharts();
             buscarDados();
             setInterval(buscarDados, INTERVALO_ATUALIZACAO_MS);
             atualizarMesAno();
             calcularPaceMes(); // Calcula pace imediatamente
+            agendarRecarregamento(); // Previne memory leak limitando runtime a 24h
         });
+
+        // Forçar reload às 03:00 para manter saúde da TV/Navegador
+        function agendarRecarregamento() {
+            const agora = new Date();
+            const recarregar = new Date();
+            recarregar.setHours(3, 0, 0, 0);
+
+            if (agora > recarregar) {
+                recarregar.setDate(recarregar.getDate() + 1);
+            }
+
+            const tempoAteRecarregar = recarregar.getTime() - agora.getTime();
+            setTimeout(() => {
+                window.location.reload(true);
+            }, tempoAteRecarregar);
+        }
 
         // ============================================================
         // ✅ PACE DO MÊS — calcula % de dias decorridos no mês atual
@@ -408,8 +759,8 @@
             // % de dias decorridos (considerando o dia atual como completo)
             const pct = Math.round((diaAtual / totalDias) * 100);
 
-            const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
-                           'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+            const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
             // Atualiza os elementos do card
             document.getElementById('pace-nome-mes').textContent = meses[mes];
@@ -421,6 +772,42 @@
             // Anima o círculo
             const offset = 125.7 - (125.7 * pct / 100);
             document.getElementById('circle-pace').style.strokeDashoffset = offset;
+
+            return pct; // Retorna para uso na lógica de frases
+        }
+
+        function atualizarMensagemMotivacional(nmrrPct, pacePct) {
+            let categoria = 'no_ritmo';
+
+            if (nmrrPct >= 100) {
+                categoria = 'meta_batida';
+            } else if (nmrrPct >= (pacePct + 10)) {
+                categoria = 'excelente';
+            } else if (nmrrPct < pacePct) {
+                categoria = 'alerta';
+            }
+
+            const frases = FRASE_CONFIG[categoria];
+            const fraseAleatoria = frases[Math.floor(Math.random() * frases.length)];
+
+            const msgEl = document.getElementById('mensagem-motivacional');
+            const iconEl = document.getElementById('mensagem-icon');
+            
+            if (msgEl) {
+                msgEl.textContent = fraseAleatoria;
+
+                // Ajusta cor do ícone/texto baseado na categoria
+                if (categoria === 'meta_batida') {
+                    msgEl.className = 'text-base font-semibold text-emerald-400';
+                    if (iconEl) iconEl.className = 'w-5 h-5 text-emerald-400 animate-pulse-slow';
+                } else if (categoria === 'alerta') {
+                    msgEl.className = 'text-base font-semibold text-red-500';
+                    if (iconEl) iconEl.className = 'w-5 h-5 text-red-500 animate-pulse-slow';
+                } else {
+                    msgEl.className = 'text-base font-semibold text-emerald-400';
+                    if (iconEl) iconEl.className = 'w-5 h-5 text-emerald-400 animate-pulse-slow';
+                }
+            }
         }
 
         async function buscarDados() {
@@ -431,7 +818,7 @@
                 renderizarDashboard(dados);
                 document.getElementById('error-banner').style.display = 'none';
 
-                const horaFormatada = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+                const horaFormatada = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
                 document.getElementById('last-update').textContent = 'Atualizado às ' + horaFormatada;
                 atualizarTimestampHeader();
 
@@ -448,7 +835,7 @@
         function atualizarTimestampHeader() {
             const agora = new Date();
             const data = agora.toLocaleDateString('pt-BR');
-            const hora = agora.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit', second: '2-digit'});
+            const hora = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
             document.getElementById('header-update-text').textContent =
                 `Última atualização: ${data}, ${hora}`;
         }
@@ -460,7 +847,7 @@
 
         function safePct(valor, meta) {
             if (!n(meta)) return 0;
-            return Math.min(Math.round((n(valor) / n(meta)) * 100), 100);
+            return Math.round((n(valor) / n(meta)) * 100); // Sem limitar a 100 no texto
         }
 
         function renderizarDashboard(d) {
@@ -478,14 +865,14 @@
             document.getElementById('pct-vendas').textContent = vendasPct + '%';
             setCircle('circle-vendas', vendasPct);
 
-            const convVal  = n(d.conversao_valor);
+            const convVal = n(d.conversao_valor);
             const convMeta = n(d.conversao_meta);
-            const convVar  = n(d.conversao_variacao);
-            const convPct  = safePct(convVal, convMeta);
-            document.getElementById('val-conversao').textContent  = convVal  ? convVal.toFixed(2) + '%' : '--%';
-            document.getElementById('meta-conversao').textContent = convMeta ? convMeta.toFixed(0)      : '--';
+            const convVar = n(d.conversao_variacao);
+            const convPct = safePct(convVal, convMeta);
+            document.getElementById('val-conversao').textContent = convVal ? convVal.toFixed(2) + '%' : '--%';
+            document.getElementById('meta-conversao').textContent = convMeta ? convMeta.toFixed(0) : '--';
             document.getElementById('conversao-variacao').textContent = convVar.toFixed(2);
-            document.getElementById('pct-conversao').textContent  = convPct + '%';
+            document.getElementById('pct-conversao').textContent = convPct + '%';
             setCircle('circle-conversao', convPct);
 
             const pipelineMeta = n(d.pipeline_meta);
@@ -504,19 +891,52 @@
             setBar('val-agendas', 'meta-agendas', 'pct-agendas', 'bar-agendas', d.agendas_valor, d.agendas_meta);
             setBar('val-sql-inbound', 'meta-sql-inbound', 'pct-sql-inbound', 'bar-sql-inbound', d.sqlin_valor, d.sqlin_meta);
             setBar('val-sql-outbound', 'meta-sql-outbound', 'pct-sql-outbound', 'bar-sql-outbound', d.sqlout_valor, d.sqlout_meta);
+
+            const pacePct = calcularPaceMes();
+            atualizarMensagemMotivacional(nmrrPct, pacePct);
+        }
+
+        function getColorByPct(pct) {
+            if (pct >= 100) return '#4ade80'; // Esmeralda
+            if (pct >= 80) return '#fbbf24'; // Dourado
+            if (pct >= 50) return '#f59e0b'; // Laranja
+            return '#ef4444';                 // Vermelho
         }
 
         function setCircle(id, pct) {
-            const offset = 125.7 - (125.7 * pct / 100);
-            document.getElementById(id).style.strokeDashoffset = offset;
+            const displayPct = Math.min(pct, 100);
+            const offset = 125.7 - (125.7 * displayPct / 100);
+            const circle = document.getElementById(id);
+
+            // Removemos a transição no JS para o Print sair sem framings
+            circle.style.transition = 'none';
+            circle.style.strokeDashoffset = offset;
+
+            const color = getColorByPct(pct);
+            circle.style.stroke = color;
+
+            // Pega o id do texto central ex: circle-nmrr -> pct-nmrr
+            const pctLabel = document.getElementById(id.replace('circle-', 'pct-'));
+            if (pctLabel) pctLabel.style.color = color;
         }
 
         function setBar(valId, metaId, pctId, barId, valor, meta) {
-            const pct = Math.min(Math.round((n(valor) / (n(meta) || 1)) * 100), 100);
+            const reqPct = Math.round((n(valor) / (n(meta) || 1)) * 100);
+            const displayPct = Math.min(reqPct, 100);
+
             document.getElementById(valId).textContent = n(valor) || '--';
             document.getElementById(metaId).textContent = n(meta) || '--';
-            document.getElementById(pctId).textContent = pct + '%';
-            document.getElementById(barId).style.width = pct + '%';
+
+            const pctLabel = document.getElementById(pctId);
+            pctLabel.textContent = reqPct + '%';
+
+            const color = getColorByPct(reqPct);
+            pctLabel.style.color = color;
+
+            const bar = document.getElementById(barId);
+            bar.style.transition = 'none'; // Previne mid-animation no print
+            bar.style.width = displayPct + '%';
+            bar.style.background = `linear-gradient(90deg, ${color}cc, ${color})`;
         }
 
         function fmt(num) {
@@ -524,7 +944,7 @@
         }
 
         function atualizarMesAno() {
-            const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+            const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
             const agora = new Date();
             const el = document.getElementById('mes-ano');
             if (el) el.textContent = meses[agora.getMonth()] + ' ' + agora.getFullYear();
@@ -534,6 +954,7 @@
         function initCharts() {
             const opts = {
                 responsive: true, maintainAspectRatio: false,
+                animation: false, // <-- Desabilita animação no Canvas para evitar print mid-rendering
                 plugins: { legend: { display: false }, tooltip: { enabled: false } },
                 scales: { x: { display: false }, y: { display: false, min: 0, max: 50 } },
                 elements: { point: { radius: 0 }, line: { tension: 0.4, borderWidth: 2 } }
@@ -543,12 +964,13 @@
                 g.addColorStop(0, c1); g.addColorStop(1, c2); return g;
             };
             const ctx1 = document.getElementById('chart1').getContext('2d');
-            charts.nmrr = new Chart(ctx1, { type: 'line', data: { labels: Array(10).fill(''), datasets: [{ data: [5,10,15,20,25,30,35,40,45,48], borderColor: '#4ade80', backgroundColor: grad(ctx1,'rgba(74,222,128,0.4)','rgba(74,222,128,0)'), fill: true }] }, options: opts });
+            charts.nmrr = new Chart(ctx1, { type: 'line', data: { labels: Array(10).fill(''), datasets: [{ data: [5, 10, 15, 20, 25, 30, 35, 40, 45, 48], borderColor: '#4ade80', backgroundColor: grad(ctx1, 'rgba(74,222,128,0.4)', 'rgba(74,222,128,0)'), fill: true }] }, options: opts });
             const ctx2 = document.getElementById('chart2').getContext('2d');
-            charts.vendas = new Chart(ctx2, { type: 'line', data: { labels: Array(10).fill(''), datasets: [{ data: [8,12,15,18,22,28,32,36,40,45], borderColor: '#60a5fa', backgroundColor: grad(ctx2,'rgba(96,165,250,0.4)','rgba(96,165,250,0)'), fill: true }] }, options: opts });
+            charts.vendas = new Chart(ctx2, { type: 'line', data: { labels: Array(10).fill(''), datasets: [{ data: [8, 12, 15, 18, 22, 28, 32, 36, 40, 45], borderColor: '#60a5fa', backgroundColor: grad(ctx2, 'rgba(96,165,250,0.4)', 'rgba(96,165,250,0)'), fill: true }] }, options: opts });
             const ctx3 = document.getElementById('chart3').getContext('2d');
-            charts.conversao = new Chart(ctx3, { type: 'line', data: { labels: Array(10).fill(''), datasets: [{ data: [10,15,20,25,30,35,38,42,45,48], borderColor: '#c084fc', backgroundColor: grad(ctx3,'rgba(192,132,252,0.4)','rgba(192,132,252,0)'), fill: true }] }, options: opts });
+            charts.conversao = new Chart(ctx3, { type: 'line', data: { labels: Array(10).fill(''), datasets: [{ data: [10, 15, 20, 25, 30, 35, 38, 42, 45, 48], borderColor: '#c084fc', backgroundColor: grad(ctx3, 'rgba(192,132,252,0.4)', 'rgba(192,132,252,0)'), fill: true }] }, options: opts });
         }
     </script>
 </body>
+
 </html>
